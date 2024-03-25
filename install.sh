@@ -4,12 +4,16 @@
 set -e
 set -u
 
+DOTFILES=$HOME/.dotfiles
+
 usage() {
     echo "Usage: $0 [OPTIONS] [TARGET]"
     echo "Options:"
     echo "  -h, --help      Display this help message and exit"
     echo "  -v, --version   Display version information and exit"
     echo "  -n, --dry-run   Dry run. Do not link or install anything"
+    echo "  -D, --delete    Pass-through to stow (delete links)"
+    echo "  -R, --restow    Pass-through to stow (recreate links)"
     echo "Targets (choose one):"
     echo "  macos           Install dotfiles for macOS and exit"
     echo "  debian          Install dotfiles for Debian-like and exit"
@@ -37,12 +41,12 @@ install_homebrew() {
 
 build_brewfile(){
     $DEBUG && echo "[DEBUG] Building final brewfile from parts"
-    $DRY_RUN || cat ./macos/*.Brewfile > ./macos/Brewfile
+    $DRY_RUN || cat $DOTFILES/macos/*.Brewfile > "$DOTFILES/macos/Brewfile"
 }
 
 install_brewfile(){
     $DEBUG && echo "[DEBUG] Installing bundle from brewfile"
-    $DRY_RUN || brew bundle install --file ./macos/Brewfile
+    $DRY_RUN || brew bundle install --file "$DOTFILES/macos/Brewfile"
 }
 
 ensure_stow() {
@@ -58,14 +62,14 @@ link_common() {
     local TOTAL=11
 
     link_xdg() {
-        echo "Linking:[$INDEX/$TOTAL] $1"
-    $DRY_RUN || stow -t $XDG_CONFIG_HOME $1
-    ((INDEX++))
+        echo "$LINKING_ACTION:[$INDEX/$TOTAL] $1"
+        $DRY_RUN || stow -d $DOTFILES -t $XDG_CONFIG_HOME $STOW_FLAGS $1
+        ((INDEX++))
     }
 
     link_home(){
-        echo "Linking:[$INDEX/$TOTAL] $1"
-        $DRY_RUN || stow -t $HOME $1
+        echo "$LINKING_ACTION:[$INDEX/$TOTAL] $1"
+        $DRY_RUN || stow -d $DOTFILES -t $HOME $STOW_FLAGS $1
         ((INDEX++))
     }
 
@@ -75,7 +79,7 @@ link_common() {
     link_home "vim"
     link_home "zsh"
 
-    $DEBUG && echo "[DEBUG] Running stow for xdh-home packages"
+    $DEBUG && echo "[DEBUG] Running stow for xdg-config-home packages"
     # Keeps these sorted!
     link_xdg "ghc"
     link_xdg "git"
@@ -91,6 +95,7 @@ link_common() {
 }
 
 post_ssh(){
+    [[ $LINKING_ACTION == "Delinking" ]] && return
     echo "[...] Appending ssh_config include to actual file"
     local ssh_cmd="Include '$HOME/.ssh/config.personal'"
     local config="$HOME/.ssh/config"
@@ -113,11 +118,11 @@ macos() {
     local TOTAL="5"
     echo "[macOS]:Installing!" && line
     echo "[macOS]:[1/$TOTAL] install_homebrew ..."
-    install_homebrew
+    $SKIP_HOMEBREW && echo "Skipping homebrew!" || install_homebrew
     echo "[macOS]:[2/$TOTAL] build_brewfile ..."
-    build_brewfile
+    $SKIP_HOMEBREW && echo "Skipping homebrew!" || build_brewfile
     echo "[macOS]:[3/$TOTAL] install_brewfile ..."
-    install_brewfile
+    $SKIP_HOMEBREW && echo "Skipping homebrew!" || install_brewfile
     echo "[macOS]:[4/$TOTAL] ensure_stow ..."
     ensure_stow
     echo "[macOS]:[5/$TOTAL] link_common ..."
@@ -155,6 +160,9 @@ setup_dry_run(){
 
 
 TARGET=
+STOW_FLAGS=
+SKIP_HOMEBREW=false
+LINKING_ACTION="Linking"
 
 $DEBUG && echo "[DEBUG] Parsing arguments"
 for arg in "$@"; do
@@ -163,6 +171,18 @@ for arg in "$@"; do
         -h|--help) usage; exit 0 ;;
         -v|--version) version; exit 0 ;;
         -n|--dry-run) setup_dry_run ;;
+        -S|--stow)
+            STOW_FLAGS="-S $STOW_FLAGS"
+            SKIP_HOMEBREW=true
+            LINKING_ACTION="Linking" ;;
+        -R|--restow)
+            STOW_FLAGS="-R $STOW_FLAGS"
+            SKIP_HOMEBREW=true
+            LINKING_ACTION="Relinking" ;;
+        -D|--delete) 
+            STOW_FLAGS="-D $STOW_FLAGS"
+            SKIP_HOMEBREW=true
+            LINKING_ACTION="Delinking" ;;
         macos) TARGET=macos;;
         debian) TARGET=debian;;
         redhat) TARGET=redhat;;

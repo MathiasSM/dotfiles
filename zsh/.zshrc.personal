@@ -11,6 +11,10 @@
 # - $ZDOTDIR/.zlogout   (if exiting a login shell)
 # =============================================================================
 
+unalias config 2>/dev/null
+function config {
+  git --git-dir="$HOME/dotfiles.old/" --work-tree="$HOME/fakehome" $@
+}
 
 # Set a good term
 export TERM=xterm-256color

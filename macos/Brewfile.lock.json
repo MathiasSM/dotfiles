@@ -14,7 +14,7 @@
         "revision": "0deb1862549a884d270c75df94462876ef720642"
       },
       "homebrew/cask-fonts": {
-        "revision": "8bb913bbbc55fedefab047342b6d9bd31bdb10be"
+        "revision": "6d63feb7ca8911e1b714279d755d38fd88e6286f"
       },
       "homebrew/core": {
         "revision": "7e1b8f2173dbc90b0b89d0777ca07159d732e95f"
@@ -3471,7 +3471,7 @@
         }
       },
       "android-platform-tools": {
-        "version": "35.0.0",
+        "version": "35.0.1",
         "options": {
           "full_name": "android-platform-tools"
         }
@@ -3889,7 +3889,7 @@
   "system": {
     "macos": {
       "sonoma": {
-        "HOMEBREW_VERSION": "4.2.13-142-g92a4311",
+        "HOMEBREW_VERSION": "4.2.15-4-g966f819",
         "HOMEBREW_PREFIX": "/usr/local",
         "Homebrew/homebrew-core": "api",
         "CLT": "15.3.0.0.1.1708646388",
