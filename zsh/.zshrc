@@ -32,6 +32,16 @@ setopt C_PRECEDENCES     # For arithmetics!
 
 # Load Prezto
 source "$HOME/.zprezto/init.zsh" # This loads .zpreztorc
+PROMPT='%(1j.[%j] .)'$PROMPT # Show number of background jobs
+# Show red exit code on right, with timestamp
+precmd_pipestatus() {
+  local exitcodes="${(j.|.)pipestatus}"
+  RPROMPT='%F{white}[%*]'
+  if [[ "$exitcodes" != "0" ]]; then
+    RPROMPT="%F{$prompt_pure_colors[prompt:error]}[$exitcodes]%f $RPROMPT"
+  fi
+}
+add-zsh-hook precmd precmd_pipestatus
 
 # And custom completions
 if type brew &>/dev/null; then
