@@ -183,4 +183,10 @@ pip-selfcheck.json
 # XCode
 xcuserdata/
 
+# Java
+.factorypath
+.project
+.settings/
+.classpath
+
 # }}}
