@@ -98,7 +98,7 @@ if which plenv > /dev/null; then eval "$(plenv init - zsh)"
 else echo "Missing 'plenv', skipping config"; fi
 
 # Haskell
-export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+export GHCUP_USE_XDG_DIRS=true
 
 
 # Some aliases
