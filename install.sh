@@ -81,12 +81,12 @@ link_common() {
 
     $DEBUG && echo "[DEBUG] Running stow for xdg-config-home packages"
     # Keeps these sorted!
-    link_xdg "amethyst"
+    link_xdg "amethyst" # Only relevant for macOS
     link_xdg "ghc"
     link_xdg "ghcup"
     link_xdg "git"
     link_xdg "gnupg"
-    link_xdg "karabiner" # Only relevant for macOS
+    link_xdg "karabiner" && post_karabiner # Only relevant for macOS
     link_xdg "nvim"
     link_xdg "pgcli"
     link_xdg "psql"
@@ -94,6 +94,20 @@ link_common() {
 
     # TODO: terminfos
     # TODO: linux
+}
+
+post_karabiner(){
+    [[ $LINKING_ACTION == "Delinking" ]] && return
+    $DEBUG && echo "[DEBUG] Checking if karabiner folder (not file) was linked"
+    local KARABINER="$XDG_CONFIG_HOME/karabiner"
+    [ -L $KARABINER ] && return
+    echo "[...] Karabiner needs to symlink the folder, moving original folder"
+    $DRY_RUN || mv $KARABINER "$KARABINER.bck"
+    echo "[...] Linking karabiner again"
+    $DRY_RUN || stow -d $DOTFILES -t $XDG_CONFIG_HOME $STOW_FLAGS "karabiner"
+    $DEBUG && echo "[DEBUG] Checking (again) if karabiner folder (not file) was linked"
+    [ -L $KARABINER ] && return
+    echo "[...] ERROR: Failed to link karabiner folder"
 }
 
 post_ssh(){
