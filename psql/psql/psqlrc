@@ -1,0 +1,62 @@
+-- vim: ft=plsql
+--       ^--- Not quite but oh well
+
+\set QUIET -- During psqlrc execution
+--------------------------------------------------------------------------------
+
+-- BEHAVIOR
+-- ==============================================================================
+
+-- Verbose error reports
+\set VERBOSITY verbose
+
+-- Use a separate history file per-database, and ignore duplicates
+\set HISTFILE ~/.psql_history-:DBNAME
+\set HISTCONTROL ignoredups
+
+-- Ignore statement errors (they do not abort the transaction) on interactive mode
+\set ON_ERROR_ROLLBACK interactive
+
+-- Autocomplete keywords (like SELECT) in upper-case
+\set COMP_KEYWORD_CASE upper
+
+-- Disable pager by default
+\pset pager off
+
+-- Enable timing
+\timing on
+
+-- LOOKS
+-- ==============================================================================
+
+-- PROMPT
+-- See: https://www.postgresql.org/docs/current/app-psql.html#APP-PSQL-PROMPTING
+-- * %[ %] wrap invisible control characters
+-- * %M: Full hostname or [local]
+-- * %>: port
+-- * %n: db session username
+-- * %#: # if superuser, > otherwise
+-- * %R: Show hint of expected input
+-- * %w: Whitespace to align with prompt 1
+\set PROMPT1 '%[%033[1m%]%M:%> %n@%%[%033[0m%] %# '
+\set PROMPT2 '%w%R '
+
+-- Printing settings
+\pset linestyle unicode
+\pset border 2
+\pset csv_fieldsep '\t'
+\pset unicode_border_linestyle single
+\pset unicode_column_linestyle single
+\pset unicode_header_linestyle double
+
+-- Show NULL results as NULL
+\pset null '(null)'
+
+-- Use regular table format by default, but expanded if too much data
+\pset expanded auto
+
+
+--------------------------------------------------------------------------------
+\unset QUIET
+
+

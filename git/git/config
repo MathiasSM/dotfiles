@@ -1,0 +1,86 @@
+# vim: ft=gitconfig
+# Default User
+# ===========================================================================
+
+[user]
+	name = Mathias San Miguel
+	email = mathiassanmiguel@gmail.com
+	signingkey = mathiassanmiguel@gmail.com
+	useConfigOnly
+[credential]
+	username = mathiassm
+
+
+# General behavior
+# ===========================================================================
+
+[core]
+	eol = lf
+	safecrlf
+	pager = less -SR
+[color]
+	ui = auto
+	interactive = always
+
+[grep]
+	lineNumber
+	extendedRegexp
+
+[status]
+	showStash
+[log]
+	decorate = auto
+	abbrevCommit
+	date = short
+	follow
+[versionsort]
+	suffix = "-pre" "-rc" # v0.5 -> v1.0-pre1 -> v1.0-pre2 -> v1.0-rc1 -> v1.0
+
+[tag]
+	gpgSign = true
+[commit]
+	gpgsign = false
+[push]
+	gpgSign = if-asked
+	recurseSubmodules = check
+[pull]
+	ff = only
+
+
+# Aliases
+# ===========================================================================
+
+[alias]
+	last    = log -1 --numstat
+	unstage = reset HEAD --
+	logga   = "!f(){ git log --decorate --date=short --graph --all --pretty=format:\"$GIT_ALIAS_LOGGA\"; }; f"
+	logg    = "!f(){ git log --decorate --date=short --graph       --pretty=format:\"$GIT_ALIAS_LOGG\"; }; f"
+	logn    = "!f(){ git log --decorate --date=short --numstat     --pretty=format:\"$GIT_ALIAS_LOGN\"; }; f"
+	logf    = log -u --follow
+
+
+# External tools (diff, merge, git-subcommands)
+# ===========================================================================
+
+[mergetool]
+	prompt = true
+[merge]
+	tool = nvimdiff
+[mergetool "nvimdiff"]
+	cmd = nvim -c "Gdiffsplit!" "$MERGED"
+
+[difftool]
+	prompt = true
+[diff]
+	tool = nvimdiff
+[difftool "nvimdiff"]
+	cmd = nvim -d "$LOCAL" "$REMOTE"
+
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required
+
+[gpg]
+	program = gpg

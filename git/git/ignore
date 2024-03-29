@@ -1,0 +1,186 @@
+# vim: ft=gitignore foldmethod=marker foldlevel=0
+# Each section taken from github/gitignore files, with minor changes
+# ------------------------------------------------------------------------------
+# 
+# There might be some duplicates, as different sections might have similar rules
+#
+# ==============================================================================
+
+# OS {{{
+# ==============================================================================
+
+# Linux
+*~ # Not sure if this is only vim
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+
+# }}}
+# Binaries {{{
+# ==============================================================================
+
+# Archives - git has its own built in compression methods.
+*.7z
+*.jar
+*.rar
+*.zip
+*.gz
+*.gzip
+*.tgz
+*.bzip
+*.bzip2
+*.bz2
+*.xz
+*.lzma
+*.cab
+*.xar
+*.iso
+*.tar
+*.dmg
+*.xpi
+*.gem
+*.egg
+*.deb
+*.rpm
+*.msi
+*.msm
+*.msp
+*.txz
+
+# Images (except svg)
+*.jpg
+*.jpeg
+*.jpe
+*.jif
+*.jfif
+*.jfi
+*.jp2
+*.j2k
+*.jpf
+*.jpx
+*.jpm
+*.mj2
+*.jxr
+*.hdp
+*.wdp
+*.gif
+*.raw
+*.webp
+*.png
+*.apng
+*.mng
+*.tiff
+*.tif
+*.svgz
+*.pdf
+*.xbm
+*.bmp
+*.dib
+*.ico
+*.3dm
+*.max
+
+
+
+# }}}
+# Temporal files {{{
+# ==============================================================================
+
+# Backups
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
+
+# Diff
+*.patch
+*.diff
+
+# Tags created by etags, ctags, gtags (GNU global) and cscope
+TAGS
+.TAGS
+!TAGS/
+tags
+.tags
+!tags/
+gtags.files
+GTAGS
+GRTAGS
+GPATH
+GSYMS
+cscope.files
+cscope.out
+cscope.in.out
+cscope.po.out
+
+
+# }}}
+# Other Tool-specific {{{
+# ==============================================================================
+
+# GPG
+secring.*
+
+# Dropbox
+.dropbox
+.dropbox.attr
+.dropbox.cache
+
+# LibreOffice locks
+.~lock.*#
+
+# Microsoft Office
+*.tmp
+~$*.doc*
+Backup of *.doc*
+~$*.xls*
+*.xlk
+~$*.ppt*
+*.~vsd*
+
+# Vim (I probably don't need this much ignore rules)
+[._]*.s[a-v][a-z]
+!*.svg  # To avoid the line above ignoring SVG files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+Sessionx.vim
+.netrwhist
+*~
+**/doc/tags
+[._]*.un~
+
+# Python (virtualenv)
+.Python
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
+# XCode
+xcuserdata/
+
+# }}}
