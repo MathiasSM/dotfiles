@@ -51,12 +51,12 @@
 # ===========================================================================
 
 [alias]
-	last    = log -1 --numstat
-	unstage = reset HEAD --
-	logga   = "!f(){ git log --decorate --date=short --graph --all --pretty=format:\"$GIT_ALIAS_LOGGA\"; }; f"
-	logg    = "!f(){ git log --decorate --date=short --graph       --pretty=format:\"$GIT_ALIAS_LOGG\"; }; f"
-	logn    = "!f(){ git log --decorate --date=short --numstat     --pretty=format:\"$GIT_ALIAS_LOGN\"; }; f"
-	logf    = log -u --follow
+	last     = log -1 --numstat
+	unstage  = reset HEAD --
+	logg     = "!f(){ git log --decorate --date=short --graph       --pretty=format:\"$GIT_ALIAS_LOGG\"; }; f"
+	logga    = "!f(){ git log --decorate --date=short --graph --all --pretty=format:\"$GIT_ALIAS_LOGGA\"; }; f"
+	loggagpg = "!f(){ git log --decorate --date=short --graph --all --pretty=format:\"$GIT_ALIAS_LOGGA_GPG\"; }; f"
+	logf     = log -u --follow
 
 
 # External tools (diff, merge, git-subcommands)

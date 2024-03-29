@@ -105,6 +105,16 @@ export GHCUP_USE_XDG_DIRS=true
 # ==============================================================================
 alias ls="ls --color=auto"
 
+tab="%x09"
+a_date="%C(blue)%ad"
+s_hash="%C(yellow)(%h)"
+refs="%C(red)%d" # Try %D
+a_subject="%C(reset)%<|(100) %s"
+c_name="%C(blue) [%cn]"
+export GIT_ALIAS_LOGG="$tab$a_date $s_hash$refs $a_subject$c_name"
+export GIT_ALIAS_LOGGA="$tab$a_date $s_hash$refs $a_subject$c_name"
+export GIT_ALIAS_LOGGA_GPG="$tab$a_date $s_hash$refs $a_subject$c_name %G? %GK"
+
 
 # Finally...
 # =============================================================================
