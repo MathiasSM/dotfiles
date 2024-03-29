@@ -76,7 +76,6 @@ link_common() {
     $DEBUG && echo "[DEBUG] Running stow for home packages"
     # Keep these sorted!
     link_home "ssh" && post_ssh
-    link_home "vim"
     link_home "zsh"
 
     $DEBUG && echo "[DEBUG] Running stow for xdg-config-home packages"
@@ -87,7 +86,6 @@ link_common() {
     link_xdg "git"
     link_xdg "gnupg"
     link_xdg "karabiner" && post_karabiner # Only relevant for macOS
-    link_xdg "nvim"
     link_xdg "pgcli"
     link_xdg "psql"
     link_xdg "tmux"
@@ -124,6 +122,11 @@ line(){
     printf '%*s\n' "$terminal_width" '' | tr ' ' '-'
 }
 
+remember(){
+    echo "[...] Remember to install the following separatedly:"
+    echo "[...] - NeoVim: https://github.com/MathiasSM/init.lua"
+}
+
 macos() {
     $DEBUG && echo "[DEBUG] Entered macos main"
     if [[ "$(uname -s)" != "Darwin" ]]; then
@@ -143,6 +146,7 @@ macos() {
     ensure_stow
     echo "[macOS]:[5/$TOTAL] link_common ..."
     link_common
+    remember
     line && echo "macOS:All done!"
 }
 
