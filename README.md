@@ -28,6 +28,24 @@ I have the following packages:
 
 I probably will continue to add other tools I use, as long as they are text-based configuration files.
 
+### Some things I'm missing
+
+- More dotfiles:
+    - `eslint` (better defaults)
+    - `bash` (for when I jump from zsh)
+    - terminfo files for italics
+    - personal scripts
+    - `ssh` private configuration
+    - `mutt` (if I ever get to properly configure it)
+
+- Too personal:
+    - `gmailctl`: API keys, personal info and so on
+    - `hledger`: Bad finance organization
+
+- Some from debian days (from old dotfiles repo)
+    - `rofi` window switcher
+    - `libinput` config for trackpad
+    - `xmonad` (and `xmobar`) tiling window manager (I miss it.)
 
 ## How to install?
 
