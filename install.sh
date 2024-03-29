@@ -81,6 +81,7 @@ link_common() {
 
     $DEBUG && echo "[DEBUG] Running stow for xdg-config-home packages"
     # Keeps these sorted!
+    link_xdg "amethyst"
     link_xdg "ghc"
     link_xdg "ghcup"
     link_xdg "git"

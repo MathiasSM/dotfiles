@@ -11,6 +11,7 @@ Each directory is a `stow` "package", which is to be "stowed" (its files symlink
 
 I have the following packages:
 
+- `amethyst`: Only relevant in macOS. Tiling window manager, similar to xmonad.
 - `ghc`: The (Glorious) Glasgow **Haskell** Compiler. This includes a global configuration for the REPL.
 - `ghcup`: The main installer for GHC/all haskell things.
 - `git`: My personal **Git** configuration, aliases and global ignore file. 

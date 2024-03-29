@@ -1,0 +1,271 @@
+# In order to register changes, restart Amethyst.
+# May need to `defaults delete com.amethyst.Amethyst.plist`
+# This deletes settings and forces it to pull configs from this file.
+
+
+
+# Configurations
+# ==============================================================================
+
+# Screens Padding
+screen-padding-left: 0
+screen-padding-right: 0
+screen-padding-top: 0
+screen-padding-bottom: 0
+
+# Windows margins
+window-margins: false
+smart-window-margins: true
+window-margin-size: 0
+disable-padding-on-builtin-display: false
+
+# Windows size
+window-minimum-height: 0
+window-minimum-width: 0
+window-resize-step: 5 # %
+ignore-menu-bar: false
+
+# Mouse effects
+mouse-follows-focus: false
+focus-follows-mouse: false # Kinda broken with multiple screens
+mouse-swaps-windows: false # TODO: Check if it's a ood behavior
+mouse-resizes-windows: true
+
+# HUD
+enables-layout-hud: true
+enables-layout-hud-on-space-change: true
+
+# Other
+window-max-count: 0 # Disabled max
+new-windows-to-main: false
+
+
+use-canary-build: false
+debug-layout-info: false
+
+
+
+# Keys
+# ==============================================================================
+mod1:
+  - option # Not sure if it's a bad idea to have a single modifier here
+
+mod2:
+  - option
+  - shift
+
+# Some rules
+#
+# - mod1 for moving (or common actions)
+# - mod2 for throwing (or uncommon actions)
+#
+# - Specific SPACE: 1, 2, 3, ...
+# - Specific SCREEN: [, ], \
+#
+# - next/prev SCREEN: n, p
+# - next/prev SPACE:  right, left
+# - next/prev WINDOW: j, k
+#
+
+
+
+# Layouts
+# ==============================================================================
+restore-layouts-on-launch: true
+layouts:
+  - tall
+  - wide
+  - fullscreen
+  - bsp
+
+# Change LAYOUT
+cycle-layout:
+  mod: mod1
+  key: space
+cycle-layout-backward:
+  mod: mod2
+  key: '≠' # My way of disabling this mapping
+
+select-tall-layout:
+  mod: mod2
+  key: '≠' # My way of disabling this mapping
+select-wide-layout:
+  mod: mod2
+  key: '≠' # My way of disabling this mapping
+select-fullscreen-layout:
+  mod: mod2
+  key: '≠' # My way of disabling this mapping
+select-column-layout:
+  mod: mod2
+  key: '≠' # My way of disabling this mapping
+
+# Change main SIZE
+shrink-main:
+  mod: mod1
+  key: h
+expand-main:
+  mod: mod1
+  key: l
+
+# Change number of windows in main
+increase-main:
+  mod: mod1
+  key: ','
+decrease-main:
+  mod: mod1
+  key: '.'
+
+
+
+# Float windows
+# ==============================================================================
+
+# Floating windows
+floating: []
+floating-is-blacklist: true
+float-small-windows: true
+
+# Toggle float for current window
+toggle-float:
+  mod: mod1
+  key: f
+
+
+
+# SWAP Windows
+# ==============================================================================
+
+# Swap windows in current screen
+swap-main:
+  mod: mod1
+  key: enter
+swap-ccw:
+  mod: mod2
+  key: j
+swap-cw:
+  mod: mod2
+  key: k
+
+
+
+# FOCUS Windows, Screens
+# ==============================================================================
+
+# Focus next/prev window in current screen/space
+focus-main:
+  mod: mod1
+  key: m
+focus-ccw:
+  mod: mod1
+  key: j
+focus-cw:
+  mod: mod1
+  key: k
+
+# Focus next/prev screen
+focus-screen-ccw:
+  mod: mod1
+  key: p
+focus-screen-cw:
+  mod: mod1
+  key: n
+
+# Focus a specific screen
+focus-screen-1:
+  mod: mod1
+  key: '['
+focus-screen-2:
+  mod: mod1
+  key: ']'
+focus-screen-3:
+  mod: mod1
+  key: '\'
+
+
+
+# THROW Windows across screens, spaces
+# ==============================================================================
+
+follow-space-thrown-windows: false
+
+# Move window to next/prev screen
+swap-screen-ccw:
+  mod: mod2
+  key: p
+swap-screen-cw:
+  mod: mod2
+  key: n
+
+# Move windows to specific screen
+throw-screen-1:
+  mod: mod2
+  key: '['
+throw-screen-2:
+  mod: mod2
+  key: ']'
+throw-screen-3:
+  mod: mod2
+  key: '\'
+
+# Move window to next/prev space
+throw-space-left:
+  mod: mod2
+  key: left
+throw-space-right:
+  mod: mod2
+  key: right
+
+# Move window to specific space
+throw-space-1:
+  mod: mod2
+  key: 1
+throw-space-2:
+  mod: mod2
+  key: 2
+throw-space-3:
+  mod: mod2
+  key: 3
+throw-space-4:
+  mod: mod2
+  key: 4
+throw-space-5:
+  mod: mod2
+  key: 5
+throw-space-6:
+  mod: mod2
+  key: 6
+throw-space-7:
+  mod: mod2
+  key: 7
+throw-space-8:
+  mod: mod2
+  key: 8
+throw-space-9:
+  mod: mod2
+  key: 9
+
+
+
+# Some toggles
+# ==============================================================================
+
+# Display the layout HUD with the current layout on each screen.
+display-current-layout:
+  mod: mod2
+  key: i
+
+# Toggle stuff (mostly off)
+toggle-focus-follows-mouse:
+  mod: mod2
+  key: '≠' # My way of disabling this mapping
+toggle-tiling:
+  mod: mod2
+  key: '≠' # My way of disabling this mapping
+
+# Reload
+reevaluate-windows:
+  mod: mod1
+  key: r
+relaunch-amethyst:
+  mod: mod2
+  key: r
