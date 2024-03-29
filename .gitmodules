@@ -4,9 +4,6 @@
 [submodule "tmux/plugins/tpm"]
 	path = tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
-[submodule "vim"]
-	path = vim
-	url = git@github.com:MathiasSM/.vim.git
 [submodule "nvim"]
 	path = nvim
 	url = git@github.com:MathiasSM/init.lua.git
