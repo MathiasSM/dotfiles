@@ -1,0 +1,7 @@
+cache: False
+no-verify: False
+verbose: False
+keep-dirs: Errors  # Always | Never | Errors
+downloader: Curl   # Curl | Wget | Internal
+no-network: False
+gpg-setting: GPGNone # GPGStrict | GPGLax | GPGNone
