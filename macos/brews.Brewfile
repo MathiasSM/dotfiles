@@ -71,6 +71,8 @@ brew "wget"
 brew "neomutt"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# Check your $HOME for unwanted files and directories
+brew "xdg-ninja"
 
 # Programming languages / dev env
 # ==============================================================================

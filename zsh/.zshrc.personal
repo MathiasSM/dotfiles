@@ -52,7 +52,9 @@ if type brew &>/dev/null; then
   fpath=("$(brew --prefix)/share/zsh/site-functions" $fpath)
   fpath=("$(brew --prefix)/share/zsh-completions" $fpath)
 fi
-autoload -U compinit && compinit
+
+mkdir -p "$XDG_CACHE_HOME"/zsh
+autoload compinit && compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
 
 # (git)hub
 command -v hub >/dev/null && eval `hub alias -s`
