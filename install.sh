@@ -5,6 +5,7 @@ set -e
 set -u
 
 DOTFILES=$HOME/.dotfiles
+XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 
 usage() {
     echo "Usage: $0 [OPTIONS] [TARGET]"
@@ -49,15 +50,13 @@ install_brewfile(){
     $DRY_RUN || brew bundle install --file "$DOTFILES/macos/Brewfile"
 }
 
-ensure_stow() {
+link_common() {
     $DEBUG && echo "[DEBUG] Checking if stow command is available"
     $DRY_RUN || if ! command -v "stow" &> /dev/null; then
         echo "Command 'stow' is not available. Install and try again?"
         exit 1
     fi
-}
 
-link_common() {
     local INDEX=1
     local TOTAL=11
 
@@ -134,7 +133,7 @@ macos() {
         [[ "$answer" != "y" && "$answer" != "Y" ]] && exit 1
     fi
 
-    local TOTAL="5"
+    local TOTAL=4
     echo "[macOS]:Installing!" && line
     echo "[macOS]:[1/$TOTAL] install_homebrew ..."
     $SKIP_HOMEBREW && echo "Skipping homebrew!" || install_homebrew
@@ -142,9 +141,7 @@ macos() {
     $SKIP_HOMEBREW && echo "Skipping homebrew!" || build_brewfile
     echo "[macOS]:[3/$TOTAL] install_brewfile ..."
     $SKIP_HOMEBREW && echo "Skipping homebrew!" || install_brewfile
-    echo "[macOS]:[4/$TOTAL] ensure_stow ..."
-    ensure_stow
-    echo "[macOS]:[5/$TOTAL] link_common ..."
+    echo "[macOS]:[4/$TOTAL] link_common ..."
     link_common
     remember
     line && echo "macOS:All done!"
@@ -156,8 +153,13 @@ debian() {
         read -p "Not Debian, or 'apt' not present. Continue? [y/N]:" answer
         [[ "$answer" != "y" && "$answer" != "Y" ]] && exit 1
     fi
-    echo "Once I'm back to using debian, I'll setup this setup"
-    exit 1
+
+    local TOTAL=1
+    echo "[Debian]:Installing!" && line
+    echo "[Debian]: Debian is not setup, skipping dependencies installation"
+    echo "[Debian]:[1/$TOTAL] link_common ..."
+    link_common
+    line && echo "[Debian]:All done!"
 }
 
 redhat() {
@@ -166,8 +168,13 @@ redhat() {
         read -p "Not Linux or 'yum' not present. Continue? [y/N]:" answer
         [[ "$answer" != "y" && "$answer" != "Y" ]] && exit 1
     fi
-    echo "Adding soon."
-    exit 1
+
+    local TOTAL=1
+    echo "[RHEL]:Installing!" && line
+    echo "[RHEL]: RHEL is not setup, skipping dependencies installation"
+    echo "[RHEL]:[1/$TOTAL] link_common ..."
+    link_common
+    line && echo "[RHEL]:All done!"
 }
 
 setup_dry_run(){
