@@ -50,8 +50,10 @@ zstyle ':prezto:load' pmodule \
 # Configure the modules
 # =============================================================================
 
-# Enable syntax highlighting
-zstyle ':prezto:module:syntax-highlighting' color 'yes'
+# Colors
+zstyle ':prezto:*:*' color 'yes'
+
+# Syntax highlighting
 zstyle ':prezto:module:syntax-highlighting' highlighters \
   'main'     \
   'brackets' \
@@ -71,14 +73,10 @@ zstyle ':prezto:module:prompt:pure:git:stash' show yes
 zstyle ':prezto:module:utility' safe-ops 'no'.
 
 # Load ssh identities automatically
+# I sometimes keep them in a separated keys subdirectory
 zstyle ':prezto:module:ssh:load' identities \
-  'id_rsa' 'id_dsa' 'id_github' 'id_ed25519' \
+  'id_rsa'      'id_dsa'      'id_github'      'id_ed25519' \
   'keys/id_rsa' 'keys/id_dsa' 'keys/id_github' 'keys/id_ed25519'
 
-# Don't add aliases
-zstyle ':prezto:module:git:alias' skip 'yes'
-zstyle ':prezto:module:node:alias' skip 'yes'
-zstyle ':prezto:module:perl:alias' skip 'yes'
-zstyle ':prezto:module:python:alias' skip 'yes'
-zstyle ':prezto:module:directory:alias' skip 'yes'
-zstyle ':prezto:module:history:alias' skip 'yes'
+# Don't add aliases, except for utilities
+zstyle ':prezto:*:*:alias' skip 'yes'

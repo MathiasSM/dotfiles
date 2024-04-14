@@ -140,10 +140,6 @@ brew "jq"
 brew "fortune"
 # Insanely fast image printing in your terminal
 brew "catimg"
-# Configurable talking characters in ASCII art
-brew "cowsay"
-# Renders an animated, color, ANSI-text loop of the Poptart Cat
-brew "nyancat"
 
 # CLI Apps
 # ==============================================================================

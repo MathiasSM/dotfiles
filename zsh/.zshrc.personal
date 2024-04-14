@@ -11,33 +11,28 @@
 # - $ZDOTDIR/.zlogout   (if exiting a login shell)
 # =============================================================================
 
-unalias config 2>/dev/null
-function config {
-  git --git-dir="$HOME/dotfiles.old/" --work-tree="$HOME/fakehome" $@
-}
-
-# Set a good term
+# Set a good term for interactivity
 export TERM=xterm-256color
 [ -n "$TMUX" ] && export TERM=tmux-256color
 
-# Remove tmpfs from df
-function df() {
-  df --exclude-type=tmpfs --exclude-type=devtmpfs -h --print-type "$@"
-}
-
-# Print the file pointed by the symlink
-unalias catlink 2>/dev/null
-function catlink(){ ls -l "$1" | cut -d ' ' -f 11 }
-
-# Add some options
+# Some zsh options (most others I like are set by zprezto)
 setopt CHASE_LINKS       # Resolves symlinks on cd and expanding
 setopt APPEND_CREATE     # Do not yell when a file doesn't exist at append
 setopt C_PRECEDENCES     # For arithmetics!
 
+# Custom completions (before zprezto compiles them)
+if type brew &>/dev/null; then
+  fpath=("$(brew --prefix)/share/zsh/site-functions" $fpath)
+  fpath=("$(brew --prefix)/share/zsh-completions" $fpath)
+fi
+
 # Load Prezto
 source "$HOME/.zprezto/init.zsh" # This loads .zpreztorc
-PROMPT='%(1j.[%j] .)'$PROMPT # Show number of background jobs
-# Show red exit code on right, with timestamp
+
+# Prompt: Show number of background jobs
+PROMPT='%(1j.[%j] .)'$PROMPT
+
+# Prompt: Show red exit code on right, with timestamp
 precmd_pipestatus() {
   local exitcodes="${(j.|.)pipestatus}"
   RPROMPT='%F{white}[%*]'
@@ -46,16 +41,3 @@ precmd_pipestatus() {
   fi
 }
 add-zsh-hook precmd precmd_pipestatus
-
-# And custom completions
-if type brew &>/dev/null; then
-  fpath=("$(brew --prefix)/share/zsh/site-functions" $fpath)
-  fpath=("$(brew --prefix)/share/zsh-completions" $fpath)
-fi
-
-mkdir -p "$XDG_CACHE_HOME"/zsh
-autoload compinit && compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-"$ZSH_VERSION"
-
-# (git)hub
-command -v hub >/dev/null && eval `hub alias -s`
-
