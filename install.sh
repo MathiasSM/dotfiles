@@ -89,6 +89,12 @@ link_common() {
     link_xdg "pgcli"
     link_xdg "psql"
     link_xdg "tmux"
+    link_xdg "variety" && post_variety
+}
+
+post_variety(){
+    [[ $LINKING_ACTION == "Delinking" ]] && return
+    echo "[...] Variety works best given a wallhaven.cc API key (do not commit that!)"
 }
 
 post_karabiner(){
@@ -120,7 +126,7 @@ line(){
 }
 
 remember(){
-    echo "[...] Remember to install the following separatedly:"
+    echo "[...] Remember to install the following separatedly (newer versions):"
     echo "[...] - NeoVim: https://github.com/MathiasSM/init.lua"
 }
 
