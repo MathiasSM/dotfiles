@@ -79,6 +79,7 @@ link_common() {
 
     $DEBUG && echo "[DEBUG] Running stow for xdg-config-home packages"
     # Keeps these sorted!
+    link_xdg "alacritty"
     link_xdg "amethyst" # Only relevant for macOS
     link_xdg "ghc"
     link_xdg "ghcup"
@@ -88,9 +89,6 @@ link_common() {
     link_xdg "pgcli"
     link_xdg "psql"
     link_xdg "tmux"
-
-    # TODO: terminfos
-    # TODO: linux
 }
 
 post_karabiner(){
