@@ -27,6 +27,8 @@ APPS_FOR_XDG=(
     "psql"
     "tmux"
     "variety"
+    "xmobar"
+    "xmonad"
 )
 
 

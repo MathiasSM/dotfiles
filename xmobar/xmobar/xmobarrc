@@ -1,0 +1,113 @@
+-- vim:ft=haskell
+Config { 
+   -- Appearance
+     font =         "Bitstream Vera Sans Mono Bold 12"
+   , bgColor =      "black"
+   , fgColor =      "gray60"
+   , position =     TopSize L 100 30 -- Align, Width%, Height
+   , border =       BottomB
+   , borderColor =  "#646464"
+
+   -- Layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = "%XMonadLog% } %multicoretemp% %cpu% | %memory% | %diskio% | %dynnetwork% %wi% { %LEMD%  %date% |%alsa:default:Master% | %battery% "
+
+   , allDesktops =      True    -- show on all desktops
+   , persistent =       False    -- enable/disable hiding (True = disabled)
+   , lowerOnStart = False
+   , overrideRedirect = False    -- set the Override Redirect flag (Xlib)
+
+   , commands = 
+        [ Run XMonadLog
+
+        , Run Date "<fc=#ABABAB>%F</fc> <fc=#DDDDDD>%H:%M</fc>" "date" 100
+
+	, Run Alsa "default" "Master"
+		[ "--template", "<status> <volumevbar><volume>"
+		, "--suffix"   , "True"
+		, "--"
+		, "--on", ""
+		, "--onc", "white"
+		, "--off", ""
+		, "--offc", "red"
+		] 
+
+	, Run Weather "LEMD" -- LEMD: Madrid Barajas Station
+		[ "--template", "<windKmh>km/h <fc=#4682B4><tempC></fc>°C"
+		] 18000
+
+        , Run DynNetwork -- Auto-select ethernet or wifi
+		[ "--template" , "<txvbar><tx>↑ <rxvbar><rx>↓"
+		, "--suffix"   , "True"
+		, "-H", "10000000" -- unit: bytes
+		, "-L", "100000" -- unit: bytes
+		, "--low"      , "gray40"
+		, "--normal"   , "gray90"
+		, "--high"     , "white"
+		] 10
+
+	, Run Wireless ""
+		[ "--template", "<qualityvbar><quality>"
+		, "--suffix"   , "True"
+		, "--low"      , "red"
+		, "--normal"   , "orange"
+		, "--high"     , "gray40"
+		] 100
+
+        , Run Cpu 
+		[ "--template" , "<vbar><total>%"
+                , "--L"      , "40"         -- units: %
+                , "--H"     , "85"         -- units: %
+		, "--low"      , "gray40"
+                , "--normal"   , "darkorange"
+                , "--high"     , "darkred"
+                ] 10
+
+        , Run MultiCoreTemp
+		[ "--template" , "<maxvbar><max>C"
+                , "--Low"      , "70"        -- units: °C
+                , "--High"     , "80"        -- units: °C
+		, "--low"      , "gray40"
+                , "--normal"   , "lightblue"
+                , "--high"     , "red"
+		-- , "--"
+		-- , "--mintemp", "20",
+		-- , "--maxtemp", "100"
+                ] 50
+                          
+        , Run Memory
+		[ "--template" ,"<usedvbar><usedratio>%"
+                , "--Low"      , "40"        -- units: %
+                , "--High"     , "90"        -- units: %
+		, "--low"      , "gray40"
+                , "--normal"   , "darkgreen"
+                , "--high"     , "darkred"
+		, "--"
+		, "--scale", "1024"
+                ] 10
+
+	, Run DiskIO [("/", "<totalvbar><total>/s")]
+		[ "--Low",  "200000"	-- unit: b/s
+		, "--High", "400000"	-- unit: b/s
+		, "--low"      , "gray40"
+                , "--normal"   , "darkorange"
+                , "--high"     , "darkred"
+		] 100
+	
+        , Run Battery
+		[ "--template" , "<leftvbar><acstatus>"
+		, "--suffix"   , "True"
+                , "--L"        , "30"        -- units: %
+                , "--H"        , "80"        -- units: %
+                , "--low"      , "red"
+                , "--normal"   , "darkorange"
+                , "--high"     , "darkgreen"
+                , "--"
+		, "-o"	, "<left> (<timeleft>)"
+		, "-O"	, "<left> <fc=orange>Charging (<timeleft>)</fc>"
+		, "-i"	, "<fc=green>Charged</fc>"
+                ] 50
+
+        ]
+   }
