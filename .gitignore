@@ -1,0 +1,3 @@
+ssh/.ssh/id*
+ssh/.ssh/keys*
+ssh/.ssh/known_hosts*

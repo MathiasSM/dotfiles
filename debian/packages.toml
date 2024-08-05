@@ -1,0 +1,320 @@
+# Most important dependency
+stow
+
+# Games
+0ad	# Age of Empires clone
+freeciv	# Civ 4 clone
+gnuchess	# Chess
+gnugo		# Go
+gnuminishogi	# Shogi (mini variant)
+gnushogi	# Shogi
+gravitation
+micropolis	# SimCity clone
+opencity	# SimCity clone
+pacman		# PacMan clone
+pioneers	# Catan
+shogivar	# Shogi (multiple variants)
+wesnoth		# ?
+xboard		# UI Board for chess, go, shogi, etc
+
+# Fonts
+font-manager	# UI to manage/view fonts
+fontmatrix	# UI to manage/view fonts
+fonts-alee
+fonts-ancient-scripts
+fonts-aoyagi-soseki
+fonts-comic-neue
+fonts-courier-prime
+fonts-firacode
+fonts-hack
+fonts-hack-otf
+fonts-hack-ttf
+fonts-hack-web
+fonts-kanjistrokeorders
+fonts-liberation2
+fonts-mononoki
+fonts-noto
+fonts-open-sans
+fonts-opendyslexic
+fonts-opensymbol
+fonts-powerline
+fonts-roboto
+fonts-ubuntu
+fonts-ubuntu-console
+
+# Utils
+
+
+# Desktop Environment
+lightdm		# Xsession manager
+lightdm-settings	# UI for lightdm settings
+alsa-tools-gui # UI for Volume
+trayer	# Applets and AppIndicators
+blueman	# UI for Bluetooth (+Applet)
+variety	# Wallpaper auto-fetch and changer
+feh	# Wallpaper setter
+nm-tray
+rofi
+suckless-tools
+xcompmgr
+xfce4-power-manager
+xfce4-power-manager-plugins
+xscreensaver
+
+bluetooth
+
+
+# System tools
+acpi	# Battery (stats)
+powerstat		# Battery (stats)
+powertop		# Battery manager
+wget			# Downloader
+curl			# Downloads
+rsync			# Files (copy)
+tree			# Files (list)
+less			# Paginator
+treetop			# Activity (processes)
+lsof			# Devices (view)
+htop			# Activity (processes)
+iotop			# Activity (io)
+
+# Desktop apps
+calibre
+chromium
+firefox-esr
+gimp
+gimp-data-extras
+godot3
+handbrake-ui
+hledger-ui
+inkscape
+krita
+libreoffice
+telegram-desktop
+thunderbird
+torbrowser-launcher
+vlc
+vlc-plugin-fluidsynth
+vlc-plugin-jack
+vlc-plugin-pipewire
+vlc-plugin-svg
+xsane
+
+# Dev tools
+tar			# Archiver
+gzip			# Archives
+make			# Build system
+awscli			# Client for AWS
+httpie			# Client for HTTP
+openssh-client		# Client for SSH
+pgcli			# Client for postgres
+gcc			# Compiler
+postgresql		# DB
+postgresql-contrib	# DB (extras)
+delta			# Diff
+diffutils		# Diff
+findutils		# Find
+fzf			# Find
+gpg			# GPG
+graphviz		# Graphics manipulation
+grep			# Grep
+ripgrep			# Grep
+silversearcher-ag	# Grep
+lnav			# Paginator (for logs)
+tmux			# Screen
+bash			# Shell
+zsh			# Shell
+bash-completion		# Shell (extras)
+alacritty		# Terminal
+neovim			# Text editor
+gawk			# Text manipulation
+sed			# Text manipulation
+jq			# Text manipulation+query (JSON)
+yq			# Text manipulation+query (JSON)
+git-extras		# Version Manager (extras)
+git-hub			# Version Manager (extras)
+git-lfs			# Version Manager (extras)
+git-secret		# Version Manager (extras)
+git			# Version manager
+makefile2graph		# Visualizer
+lynx			# Web browser
+
+
+# Fun
+oneko
+purity
+purity-off
+
+fortune-mod
+fortunes
+
+
+
+####
+
+accountsservice
+adduser
+allure
+alsa-firmware-loaders
+alsa-utils
+apt
+apt-listchanges
+apt-utils
+atril
+base-files
+base-passwd
+bat
+between
+bind9-dnsutils
+bind9-host
+bsdutils
+build-essential
+busybox
+bzip2
+ca-certificates
+cgoban
+console-setup
+coreutils
+cpio
+cron
+cron-daemon-common
+cryptsetup-initramfs
+dash
+dbus
+dbus-user-session
+debconf
+debconf-i18n
+debian-archive-keyring
+debian-faq
+debianutils
+discover
+dmidecode
+dmsetup
+doc-base
+doc-central
+doc-debian
+dosfstools
+dpkg
+e2fsprogs
+fdisk
+file
+firmware-iwlwifi
+firmware-linux-nonfree
+firmware-misc-nonfree
+firmware-sof-signed
+gettext-base
+gnu-standards
+gcc-12-base
+gpgv
+groff-base
+grub-common
+grub-efi-amd64
+gvfs
+hledger
+hostname
+hunspell-en-us
+hyphen-en-us
+ifupdown
+imagemagick
+inetutils-telnet
+init
+init-system-helpers
+initramfs-tools
+installation-report
+intel-microcode
+iproute2
+iputils-ping
+isc-dhcp-client
+isc-dhcp-common
+kanjidic
+kdrill
+keyboard-configuration
+kmod
+krb5-locales
+laptop-detect
+linux-cpupower
+linux-image-amd64
+locales
+login
+logrotate
+logsave
+lvm2
+man-db
+manpages
+manpages-dev
+manpages-posix
+manpages-posix-dev
+mawk
+media-types
+mime-support
+mount
+mugshot
+mythes-en-us
+nano
+ncurses-base
+ncurses-bin
+ncurses-term
+netbase
+netcat-traditional
+network-manager-gnome
+nftables
+notify-osd
+orca
+os-prober
+pandoc
+parole
+passage
+passwd
+pciutils
+perl
+perl-base
+pkg-config
+procps
+python3-reportbug
+quodlibet
+readline-common
+reportbug
+screenkey
+sensible-utils
+shared-mime-info
+shim-signed
+sigil
+system-config-printer
+systemd
+systemd-sysv
+systemd-timesyncd
+sysvinit-utils
+tango-icon-theme
+task-desktop
+task-english
+task-laptop
+tasksel
+tasksel-data
+synaptic
+traceroute
+tzdata
+ucf
+udev
+usbutils
+usr-is-merged
+util-linux
+util-linux-extra
+vim-common
+vim-tiny
+wamerican
+whiptail
+xdg-user-dirs
+xdg-utils
+xorg-dev
+xscreensaver-data
+xscreensaver-data-extra
+xscreensaver-gl
+xscreensaver-gl-extra
+xscreensaver-screensaver-bsod
+xsensors
+xserver-xorg-input-evdev
+xserver-xorg-input-libinput
+xserver-xorg-input-mouse
+xz-utils
+zlib1g
+zstd

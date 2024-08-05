@@ -108,8 +108,14 @@ fi
 
 # Shell configuration
 # =============================================================================
-# Personal PATH
+# Personal PATH and /opt-installed binaries
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="/opt/nvim/bin:$PATH"
+export PATH="/opt/nodenv/bin:$PATH"
+export PATH="/opt/pyenv/bin:$PATH"
+export PATH="/opt/plenv/bin:$PATH"
+export PATH="/opt/rbenv/bin:$PATH"
+export PATH="/opt/tree-sitter/bin:$PATH"
 
 # Editors
 export LANG='en_US.UTF-8'
@@ -154,6 +160,11 @@ export PATH="$NODENV_ROOT/bin:$PATH"
 if which nodenv > /dev/null; then eval "$(nodenv init -)"
 else echo "Missing 'nodenv', skipping its config"; fi
 
+# Ruby
+export PATH="$RUBYENV_ROOT/bin:$PATH"
+if which rbenv > /dev/null; then eval "$(rbenv init -)"
+else echo "Missing 'rbenv', skipping its config"; fi
+
 # Perl
 export PATH="$PLENV_ROOT/bin:$PATH"
 if which plenv > /dev/null; then eval "$(plenv init - zsh)"
@@ -178,10 +189,6 @@ export GIT_ALIAS_LOGGA_GPG="$tab$a_date $s_hash$refs $a_subject$c_name %G? %GK"
 # (git)hub
 command -v hub >/dev/null && eval `hub alias -s`
 
-# # Remove tmpfs from df (annoying in macOS)
-function df() {
-  df --exclude-type=tmpfs --exclude-type=devtmpfs -h --print-type "$@"
-}
 
 
 # Finally...
