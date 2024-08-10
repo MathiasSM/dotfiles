@@ -11,7 +11,7 @@
 \set VERBOSITY verbose
 
 -- Use a separate history file per-database, and ignore duplicates
-\set HISTFILE ~/.psql_history-:DBNAME
+\set HISTFILE ~/$PSQL_HISTORY-:DBNAME
 \set HISTCONTROL ignoredups
 
 -- Ignore statement errors (they do not abort the transaction) on interactive mode
@@ -38,7 +38,7 @@
 -- * %#: # if superuser, > otherwise
 -- * %R: Show hint of expected input
 -- * %w: Whitespace to align with prompt 1
-\set PROMPT1 '%[%033[1m%]%M:%> %n@%%[%033[0m%] %# '
+\set PROMPT1 '%[%033[1m%]%M:%> %n@%[%033[0m%] %# '
 \set PROMPT2 '%w%R '
 
 -- Printing settings
@@ -55,6 +55,9 @@
 -- Use regular table format by default, but expanded if too much data
 \pset expanded auto
 
+
+\echo Personal config done.
+\echo 
 
 --------------------------------------------------------------------------------
 \unset QUIET

@@ -58,6 +58,12 @@ export NODENV_ROOT="$XDG_DATA_HOME/nodenv"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
 # Plenv (Perl)
 export PLENV_ROOT="$XDG_DATA_HOME/plenv"
+# Postgres
+export PSQLRC="$XDG_CONFIG_HOME/psql/psqlrc"
+export PGPASSFILE="$XDG_CONFIG_HOME/psql/pgpass"
+export PGSERVICEFILE="$XDG_CONFIG_HOME/psql/pg_service.conf"
+export PSQL_HISTORY="$XDG_DATA_HOME/psql_history"
+touch -a "$PSQL_HISTORY"
 # Python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc.py"
 touch -a "$XDG_STATE_HOME/python_history"
@@ -169,7 +175,6 @@ else echo "Missing 'rbenv', skipping its config"; fi
 export PATH="$PLENV_ROOT/bin:$PATH"
 if which plenv > /dev/null; then eval "$(plenv init - zsh)"
 else echo "Missing 'plenv', skipping its config"; fi
-
 
 
 # Some aliases
