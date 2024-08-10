@@ -62,6 +62,7 @@ OPT_APPS=(
     "neovim"
     "pyenv"
     "nodenv"
+    "plenv"
     "ghcup"
 )
 
@@ -78,6 +79,7 @@ HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 FLATHUB_URL="https://dl.flathub.org/repo/flathub.flatpakrepo"
 
 GITHUB="https://github.com"
+
 PYENV_URL="$GITHUB/pyenv/pyenv.git"
 PYENV_CCACHE_URL="$GITHUB/pyenv/pyenv-ccache.git"
 PYENV_VIRTUALENV_URL="$GITHUB/pyenv/pyenv-virtualenv.git"
@@ -86,6 +88,9 @@ NODENV_URL="$GITHUB/nodenv/nodenv.git"
 NODENV_BUILD_URL="$GITHUB/nodenv/node-build.git"
 NODENV_UPDATE_URL="$GITHUB/nodenv/nodenv-update.git"
 NODENV_DEFAULT_PACKAGES_URL="$GITHUB/nodenv/nodenv-default-packages.git"
+
+PLENV_URL="$GITHUB/tokuhirom/plenv.git"
+PLENV_BUILD_URL="$GITHUB/tokuhirom/Perl-Build.git"
 
 NEOVIM_URL_FORMAT="$GITHUB/neovim/neovim/releases/download/%s/%s.tar.gz"
 
@@ -389,6 +394,26 @@ install_opt_nodenv() {
     install_opt_toolenv_plugin "$plugins" "node-build" "$NODENV_BUILD_URL"
     install_opt_toolenv_plugin "$plugins" "nodenv-update" "$NODENV_UPDATE_URL"
     install_opt_toolenv_plugin "$plugins" "nodenv-default-packages" "$NODENV_DEFAULT_PACKAGES_URL"
+}
+
+install_opt_plenv() {
+    debug "install_plenv"
+    if is_force_reinstall; then
+        echo "$LOG_PREFIX Forcing reinstall of plenv"
+    elif [ -d "/opt/plenv" ]; then
+        echo "$LOG_PREFIX [WARNING] plenv already present, skipping."
+        return
+    fi
+    local tmpdir=$(mktemp -p "$TMPDIR" -d "$MKTEMP_TEMPLATE")
+    debug "- Cloning into $tmpdir"
+    is_dry_run || git clone "$GIT_FLAGS" "$PLENV_URL" "$tmpdir"
+    debug "- Moving into /opt"
+    is_dry_run || sudo rm -rf "/opt/plenv"
+    is_dry_run || sudo mv "$tmpdir" "/opt/plenv"
+    debug "- Running plenv init"
+    is_dry_run || eval "$(/opt/plenv/bin/plenv init -)"
+    local plugins="$(plenv root)/plugins"
+    install_opt_toolenv_plugin "$plugins" "perl-build" "$PLENV_BUILD_URL"
 }
 
 install_opt_toolenv_plugin() {
