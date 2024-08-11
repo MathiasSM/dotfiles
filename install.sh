@@ -14,6 +14,7 @@ APPS_FOR_HOME=(
     "ssh"
     "zsh"
     "env"
+    "xorg"
 )
 APPS_FOR_XDG=(
     "alacritty"
