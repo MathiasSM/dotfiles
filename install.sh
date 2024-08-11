@@ -13,6 +13,7 @@ LOG_GROUP_SEP="    "
 APPS_FOR_HOME=(
     "ssh"
     "zsh"
+    "env"
 )
 APPS_FOR_XDG=(
     "alacritty"
