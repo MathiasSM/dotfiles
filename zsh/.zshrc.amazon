@@ -31,6 +31,7 @@ alias sam="brazil-build-tool-exec sam"
 # Silent CDK noisy logs
 export JSII_DEPRECATED="quiet"
 export AWS_EC2_METADATA_DISABLED=false
+export AWS_JAVA_V1_DISABLE_DEPRECATION_ANNOUNCEMENT=true
 
 # Ensure correct git email
 export GIT_AUTHOR_EMAIL="enlovson@amazon.com"
@@ -38,29 +39,42 @@ export GIT_AUTHOR_EMAIL="enlovson@amazon.com"
 # brazil ws show
 export BRAZIL_WORKSPACE_DEFAULT_LAYOUT=short
 
-# Used as `cmd whatever args 2>&1 | brazil_output_cleaner`
-function brazil_output_cleaner() {
-    cat
-    2>&1 | grep --line-buffered --color=always  -v "....-..-.. ..:..:.. INFO Caching" \
-    2>&1 | grep --line-buffered --color=always  -v "\s*\[echo\]\s*Replacing.*dependency" \
-    2>&1 | grep --line-buffered --color=always  -v "\s*\[echo\]\s*Removing.*dependency" \
-    2>&1 | grep --line-buffered --color=always  -v "\s*\[copy\]\s*Copying" \
-    2>&1 | grep --line-buffered --color=always  -v "\s*\[echo\]\s*Copying" \
-    2>&1 | grep --line-buffered --color=always  -v "\s*\[delete\]\s" \
-    2>&1 | grep --line-buffered --color=always  -v "\s*\[mkdir\]\s" \
-    2>&1 | grep --line-buffered --color=always  -v "WARNING: Duplicate key" \
-    2>&1 | grep --line-buffered --color=always  -v "^$"
+function clean_brazil() {
+    local grep_args=("--line-buffered" "--color=always" "-E")
+    eval "$@" \
+        2>&1 | grep ${grep_args[@]} -v "^WARNING: Duplicate key.*Replacing" \
+        2>&1 | grep ${grep_args[@]} -v "....-..-.. ..:..:.. INFO Caching" \
+        2>&1 | grep ${grep_args[@]} -v "\s*\[echo\]\s*Replacing.*dependency" \
+        2>&1 | grep ${grep_args[@]} -v "\s*Replacing.*dependency" \
+        2>&1 | grep ${grep_args[@]} -v "\s*\[echo\]\s*Removing.*dependency" \
+        2>&1 | grep ${grep_args[@]} -v "\s*Removing.*dependency" \
+        2>&1 | grep ${grep_args[@]} -v "\s*\[copy\]\s*Copying" \
+        2>&1 | grep ${grep_args[@]} -v "\s*Copying" \
+        2>&1 | grep ${grep_args[@]} -v "\s*\[echo\]\s*Copying" \
+        2>&1 | grep ${grep_args[@]} -v "\s*Copying" \
+        2>&1 | grep ${grep_args[@]} -v "\s*\[delete\]\s" \
+        2>&1 | grep ${grep_args[@]} -v "\s*\[mkdir\]\s" \
+        2>&1 | grep ${grep_args[@]} -v "WARNING: Duplicate key" \
+        2>&1 | sed '/^\s*$/N;/^\n$/D';
+    local result="${pipestatus[1]}";
+    return result
+
 }
 
 # brazil aliases
-function bb() {NPM_CONFIG_COLOR=always brazil-build "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
-function bba() {brazil-build apollo-pkg "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
-function bre() {brazil-runtime-exec "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
-function bws() {brazil ws "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
-function bwsuse() {bws use --gitMode -p "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
-function bwscreate() {bws create -n "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
-function brc() {brazil-recursive-cmd "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
-function bbr() {brc brazil-build "$@" 2>&1 | brazil_output_cleaner; return $pipestatus[1];}
+function bb() {
+    NPM_CONFIG_COLOR=always FORCE_COLOR=true "brazil-build" "$@"
+}
+function bbc() {
+    NPM_CONFIG_COLOR=always FORCE_COLOR=true clean_brazil "brazil-build" "$@"
+}
+function bba() { clean_brazil "brazil-build apollo-pkg $@" }
+function bre() { clean_brazil "brazil-runtime-exec $@" }
+function bws() { clean_brazil "brazil ws $@" }
+function bwsuse() { clean_brazil "bws use --gitMode -p $@" }
+function bwscreate() { clean_brazil "bws create -n $@" }
+function brc() { clean_brazil "brazil-recursive-cmd $@" }
+function bbr() { clean_brazil "brc brazil-build $@" }
 function bblist {
     printf -v brc_cmd 'echo $(basename %s)' '$sourcePath'
     brazil-recursive-cmd --allPackages "$brc_cmd"
@@ -74,15 +88,15 @@ function bball {
         '&& echo "$(tput setaf 117)$(tput bold)'$row1'"'
         '&& echo "$(basename $PWD) (RECURSIVE CMD \"%s\")"'
         '&& echo "'$row2'$(tput sgr0)"'
-        '&& (NPM_CONFIG_COLOR=always %s)'
+        '&& (NPM_CONFIG_COLOR=always FORCE_COLOR=true %s)'
     )
     local cmds=`echo "$cmd_list"`
     local brc_cmd;
     printf -v brc_cmd "$cmds" '$sourcePath' "$*" "$*"
-    brazil-recursive-cmd --allPackages "$brc_cmd" 2>&1 | brazil_output_cleaner 
+    clean_brazil "brazil-recursive-cmd --allPackages '$brc_cmd'"
 }                    
-function bbb() {brc --all Packages brazil-build "$@" 2>&1 | brazil_output_cleaner;}
-function bbra() {bbr apollo-pkg "$@" 2>&1 | brazil_output_cleaner;}
+function bbb() { clean_brazil "brc --allPackages brazil-build $@" }
+function bbra() { clean_brazil "bbr apollo-pkg $@" }
 
 function cdb() {
     local THERE=$PWD
