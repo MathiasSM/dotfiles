@@ -1,0 +1,140 @@
+-- vim:ft=haskell
+Config { 
+   -- Appearance
+     font =         "Bitstream Vera Sans Mono Bold 12"
+   , additionalFonts = []
+
+   , bgColor =      "black"
+   , fgColor =      "gray60"
+   , position =     TopSize L 100 30 -- Align, Width%, Height
+   , border =       BottomB
+   , borderColor =  "#646464"
+
+   -- Layout
+   , sepChar =  "%"   -- delineator between plugin names and straight text
+   , alignSep = "}{"  -- separator between left-right alignment
+   , template = "\
+   	\%XMonadLog%\
+   	\} \
+   	\%multicoretemp% %cpu% | %memory% | %diskio% | %dynnetwork% %wi%\
+	\ {\
+	\<action=gnome-weather>%LEMD%</action>  \
+	\<action=thunderbird>%date%</action> | \
+	\<action=pavucontrol>%alsa:default:Master%</action> | \
+	\<action=xfce4-power-manager-settings>%battery%</action>"
+
+   , allDesktops =      False
+   , persistent =       False
+   , lowerOnStart = False
+   , overrideRedirect = False    -- set the Override Redirect flag (Xlib)
+
+   , commands = 
+        [ Run XMonadLog
+
+        , Run Date "<fc=#ABABAB>%F</fc> <fc=#DDDDDD>%H:%M</fc>" "date" 100
+
+	, Run Alsa "default" "Master"
+		[ "--template", "<status> <volumevbar><volume>"
+		, "--suffix"   , "True"
+		, "-L", "21" -- unit: %
+		, "-H", "79" -- unit: %
+		, "--low"      , "gray40"
+		, "--normal"   , "gray90"
+		, "--high"     , "white"
+		, "--"
+		, "--on", "[on]"
+		, "--onc", "white"
+		, "--off", "[off]"
+		, "--offc", "darkred"
+		] 
+
+	, Run Weather "LEMD" -- LEMD: Madrid Barajas Station
+		[ "--template", "<windKmh>km/h <fc=#4682B4><tempC></fc>°C"
+		] 18000
+
+        , Run DynNetwork -- Auto-select ethernet or wifi
+		[ "--template" , "<txvbar><tx>↑ <rxvbar><rx>↓"
+		, "--suffix"   , "True"
+		, "-L", "100000" -- unit: bytes
+		, "-H", "10000000" -- unit: bytes
+		, "--low"      , "gray40"
+		, "--normal"   , "gray90"
+		, "--high"     , "white"
+		, "--minwidth"	, "6" --100KB/s
+		, "--ppad"	, "3"
+		] 10
+
+	, Run Wireless ""
+		[ "--template", "<qualityvbar><quality>"
+		, "--suffix"   , "True"
+		, "-L", "40" -- unit: %
+		, "-H", "80" -- unit: %
+		, "--low"      , "red"
+		, "--normal"   , "orange"
+		, "--high"     , "gray40"
+		, "--maxwidth"	, "4" -- 100%
+		, "--ppad"	, "4"
+		] 100
+
+        , Run Cpu 
+		[ "--template" , "<vbar><total>%"
+                , "--L"      , "40"         -- units: %
+                , "--H"     , "70"         -- units: %
+		, "--low"      , "gray40"
+                , "--normal"   , "darkorange"
+                , "--high"     , "darkred"
+		, "--ppad"	, "2"
+                ] 10
+
+        , Run MultiCoreTemp
+		[ "--template" , "<maxvbar><max>C"
+                , "-L"      , "70"        -- units: °C
+                , "-H"     , "85"        -- units: °C
+		, "--low"      , "gray40"
+                , "--normal"   , "lightblue"
+                , "--high"     , "red"
+		, "--ppad"	, "2"
+		--, "--"
+		--, "--mintemp", "0",
+		--, "--maxtemp", "100"
+                ] 50
+                          
+        , Run Memory
+		[ "--template" ,"<usedvbar><usedratio>%"
+                , "-L"      , "40"        -- units: %
+                , "-H"     , "80"        -- units: %
+		, "--low"      , "gray40"
+                , "--normal"   , "darkgreen"
+                , "--high"     , "darkred"
+		, "--ppad"	, "2"
+		, "--"
+		, "--scale", "1024"
+                ] 10
+
+	, Run DiskIO [("/", "<totalvbar><total>/s <totalipat>")]
+		[ "-L",  "50000"	-- unit: b/s
+		, "-H", "500000"	-- unit: b/s
+		, "--low"      , "gray40"
+                , "--normal"   , "white"
+                , "--high"     , "darkorange"
+		, "--ppad"	, "3"
+		, "--maxwidth"	, "5" -- 100KB%
+		] 100
+	
+        , Run Battery
+		[ "--template" , "<leftvbar><acstatus>"
+		, "--suffix"   , "True"
+                , "-L"        , "30"        -- units: %
+                , "-H"        , "80"        -- units: %
+                , "--low"      , "red"
+                , "--normal"   , "darkorange"
+                , "--high"     , "darkgreen"
+		, "--ppad"	, "2"
+                , "--"
+		, "-o"	, "<left> (<timeleft>)"
+		, "-O"	, "<left> <fc=orange>Charging (<timeleft>)</fc>"
+		, "-i"	, "<fc=green>Charged</fc>"
+                ] 50
+
+        ]
+   }

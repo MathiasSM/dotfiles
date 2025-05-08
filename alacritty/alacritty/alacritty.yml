@@ -1,0 +1,34 @@
+import:
+  - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
+  
+window:
+  padding:
+    x: 0
+    y: 0
+  dynamic_padding: true
+  decorations: None
+  opacity: 0.9
+
+scrolling:
+  scrolling: 100000
+
+font:
+  normal:
+    family: monospace
+    style: Regular
+
+selection:
+  save_to_clipboard: true
+
+mouse:
+  hide_when_typing: true
+
+keyboard:
+  bindings:
+    - key: N
+      mods: Control|Shift
+      action: CreateNewWindow
+    - key: T
+      mods: Control|Shift
+      action: CreateNewTab
+
