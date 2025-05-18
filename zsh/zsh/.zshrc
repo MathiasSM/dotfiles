@@ -27,7 +27,7 @@ if type brew &>/dev/null; then
 fi
 
 # Load Prezto
-source "$HOME/.zprezto/init.zsh" # This loads .zpreztorc
+source "$ZDOTDIR/zprezto/init.zsh" # This loads .zpreztorc
 
 # Prompt: Show number of background jobs
 PROMPT='%(1j.[%j] .)'$PROMPT
@@ -41,3 +41,9 @@ precmd_pipestatus() {
   fi
 }
 add-zsh-hook precmd precmd_pipestatus
+
+# Add any extra file
+for f in $ZDOTDIR/.zshrc.d/*; do
+   . "$f"
+done
+

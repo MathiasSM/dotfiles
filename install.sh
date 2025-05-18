@@ -12,6 +12,7 @@ set -o pipefail  # don't hide errors within pipes
 TMPDIR="${TMPDIR:-/tmp}"
 DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
 XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+ZDOTDIR=${ZDOTDIR:-$XDG_CONFIG_HOME/zsh}
 
 # Log Formatting
 LOG_GROUP_SEP="    "
@@ -19,7 +20,6 @@ LOG_GROUP_SEP="    "
 # For the following lists, feel free to comment out any
 APPS_FOR_HOME=(
     "ssh"
-    "zsh"
     "env"
     "xorg"
 )
@@ -38,6 +38,7 @@ APPS_FOR_XDG=(
     "variety"
     "xmobar"
     "xmonad"
+    "zsh"
 )
 
 # https://github.com/neovim/neovim/releases
@@ -123,7 +124,7 @@ FLATPAK_INSTALL_FLAGS="$FLATPAK_INSTALL_FLAGS_SILENT"
 DEBUG=${DEBUG:-false}
 DRY_RUN=${DRY_RUN:-false}
 FORCE_REINSTALL=false
-SKIP_INSTALL=false
+SKIP_INSTALL=true
 TARGET=
 LINKING_ACTION=$LINKING_ACTION_LINKING
 STOW_FLAGS=
@@ -516,6 +517,13 @@ run_app_hook() {
     fi
 }
 
+post_zsh(){
+    debug "post_zsh"
+    [[ $LINKING_ACTION == "Delinking" ]] && return
+    echo "$LOG_PREFIX Linking ~/.zshenv to ZDOTDIR"
+    is_dry_run || ln -s "$ZDOTDIR/.zshenv" "$HOME/.zshenv"
+}
+
 post_variety(){
     debug "post_variety"
     [[ $LINKING_ACTION == "Delinking" ]] && return
@@ -661,17 +669,18 @@ parse_args() {
             -S|--stow)
                 debug "  setting explicit link-only"
                 STOW_FLAGS="-S $STOW_FLAGS"
-                SKIP_INSTALL=true
                 LINKING_ACTION="$LINKING_ACTION_LINKING" ;;
             -R|--restow)
                 debug "  setting explicit relink-only"
                 STOW_FLAGS="-R $STOW_FLAGS"
-                SKIP_INSTALL=true
+                LINKING_ACTION="$LINKING_ACTION_RELINKING" ;;
+            -I|--install)
+                debug "  setting explicit relink-only"
+                SKIP_INSTALL=false
                 LINKING_ACTION="$LINKING_ACTION_RELINKING" ;;
             -D|--delete) 
                 debug "  setting explicit delink-only"
                 STOW_FLAGS="-D $STOW_FLAGS"
-                SKIP_INSTALL=true
                 LINKING_ACTION="$LINKING_ACTION_DELINKING" ;;
             macos)
                 debug "  setting target as macos"

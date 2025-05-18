@@ -15,6 +15,6 @@ source "$HOME/.profile"
 
 # =============================================================================
 # Ensure that a non-login, non-interactive shell has a defined environment.
-if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "$HOME/.zprofile" ]]; then
-  source "$HOME/.zprofile"
+if [[ ( "$SHLVL" -eq 1 && ! -o LOGIN ) && -s "$ZDOTDIR/.zprofile" ]]; then
+  source "$ZDOTDIR/.zprofile"
 fi
