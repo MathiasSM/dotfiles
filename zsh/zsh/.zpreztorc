@@ -66,8 +66,11 @@ zstyle ':prezto:module:syntax-highlighting' highlighters \
 zstyle ':prezto:module:terminal' auto-title 'yes'
 
 # Prompt theme
+export PURE_CMD_MAX_EXEC_TIME=1 # seconds
 zstyle ':prezto:module:prompt' theme 'pure'
-zstyle ':prezto:module:prompt:pure:git:stash' show yes
+
+zstyle ':prompt:pure:git:stash' show yes
+zstyle ':prompt:pure:suspended_jobs' color '#00AAFF'
 
 # Disable interactive mode (keep xxi variants)
 zstyle ':prezto:module:utility' safe-ops 'no'.

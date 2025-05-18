@@ -121,7 +121,7 @@ decrease-main:
 # ==============================================================================
 
 # Floating windows
-floating: []
+floating: ["com.tinyspeck.slackmacgap"]
 floating-is-blacklist: true
 float-small-windows: true
 
