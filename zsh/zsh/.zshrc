@@ -29,16 +29,19 @@ fi
 # Load Prezto
 source "$ZDOTDIR/zprezto/init.zsh" # This loads .zpreztorc
 
-# Prompt: Show number of background jobs
-PROMPT='%(1j.[%j] .)'$PROMPT
+export PROMPT='%F{gray}%* %f'$PROMPT
+export PROMPT='%F{$prompt_pure_colors[suspended_jobs]}%(1j.[%j] .)%f'$PROMPT
 
 # Prompt: Show red exit code on right, with timestamp
 precmd_pipestatus() {
-  local exitcodes="${(j.|.)pipestatus}"
-  RPROMPT='%F{white}[%*]'
-  if [[ "$exitcodes" != "0" ]]; then
-    RPROMPT="%F{$prompt_pure_colors[prompt:error]}[$exitcodes]%f $RPROMPT"
+  local cmd_pipestatus=($pipestatus) # First line!
+  local display_timestamp='%F{white}[%*]'
+  RPROMPT=$display_timestamp 
+  if [[ "${cmd_pipestatus[-1]}" != 0 ]]; then
+      local display_code="%F{\$prompt_pure_colors[prompt:error]}[${(j:|:)cmd_pipestatus}]%f"
+    export RPROMPT=$display_code' '$RPROMPT
   fi
+  export RPROMPT='%F{gray}# '$RPROMPT'%f'
 }
 add-zsh-hook precmd precmd_pipestatus
 
