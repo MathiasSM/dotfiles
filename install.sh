@@ -519,7 +519,7 @@ run_app_hook() {
 
 post_zsh(){
     debug "post_zsh"
-    [[ $LINKING_ACTION == "Delinking" ]] && return
+    is_delinking && return
     echo "$LOG_PREFIX Linking ~/.zshenv to ZDOTDIR"
     is_dry_run || ln -s "$ZDOTDIR/.zshenv" "$HOME/.zshenv"
 }
