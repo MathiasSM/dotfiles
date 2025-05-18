@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-# shellcheck shell=dash
 
 # =============================================================================
 # To be sourced first from .zshenv or any relevant script
@@ -27,7 +26,7 @@ esac
 
 
 # XDG
-# ==============================================================================
+# =============================================================================
 # XDG folders
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -42,13 +41,21 @@ export AWS_SHARED_CREDENTIALS_FILE="$XDG_CONFIG_HOME/aws/credentials"
 export AWS_CONFIG_FILE="$XDG_CONFIG_HOME/aws/config"
 # Cargo (Rust)
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
+# Docker 
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+# Elinks
+export ELINKS_CONFDIR="$XDG_CONFIG_HOME/elinks"
 # Gems (Ruby)
 export GEM_HOME="$XDG_DATA_HOME/gem"
 export GEM_SPEC_CACHE="$XDG_CACHE_HOME/gem"
+# Go
+export GOPATH="$XDG_DATA_HOME/go"
 # Haskell
 export GHCUP_USE_XDG_DIRS=true
 # GnuPG (Careful if changing default)
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+# Gradle
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
 # Less
 export LESSHISTFILE="$XDG_STATE_HOME/less/history"
 # Terminfo
@@ -58,7 +65,12 @@ export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 # Nodenv (Node)
 export NODENV_ROOT="$XDG_DATA_HOME/nodenv"
 # Npm
+export NPM_CONFIG_CACHE="$XDG_CACHE_HOME/npm"
+export NPM_CONFIG_TMP="$XDG_RUNTIME_DIR/npm"
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export NPM_CONFIG_INIT_MODULE="$XDG_CONFIG_HOME/npm/config/npm-init.js"
+# Nvm
+export NVM_DIR="$XDG_DATA_HOME/nvm"
 # Plenv (Perl)
 export PLENV_ROOT="$XDG_DATA_HOME/plenv"
 # Python
@@ -66,9 +78,12 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc.py"
 touch -a "$XDG_STATE_HOME/python_history"
 # Pyenv (Python)
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
+# Rustup (Rust)
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 # Stack (Haskell)
 export STACK_XDG=true
 # Wget
+#alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 command -v wget > /dev/null && wget() {
     command wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 }
@@ -77,7 +92,9 @@ export WGETRC="$XDG_CONFIG_HOME/wgetrc"
 export ICEAUTHORITY="$XDG_CACHE_HOME/ICEauthority"
 export ERRFILE="$XDG_CACHE_HOME/X11/xsession-errors"
 # Zsh
+[[ -d "$XDG_STATE_HOME/zsh" ]] || mkdir -p "$XDG_STATE_HOME/zsh"
 export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
 
 
@@ -88,17 +105,18 @@ if [ "$OS" = "macos" ]; then
     # Mimic the result of the slow path_helper (and be explicit)
     # NOTE: Remove path_helper call from /etc/zprofile
     mimic_path_helper() {
+        local codex="/var/run/com.apple.security.cryptexd/codex.system"
         PATH="/usr/local/bin" # RESETS!
         PATH="$PATH:/System/Cryptexes/App/usr/bin"
         PATH="$PATH:/usr/bin"
         PATH="$PATH:/bin"
         PATH="$PATH:/usr/sbin"
         PATH="$PATH:/sbin"
-        PATH="$PATH:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
-        PATH="$PATH:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
-        PATH="$PATH:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
+        PATH="$PATH:$codex/bootstrap/usr/local/bin"
+        PATH="$PATH:$codex/bootstrap/usr/bin"
+        PATH="$PATH:$codex/bootstrap/usr/appleinternal/bin"
         PATH="$PATH:/Library/Apple/usr/bin"
-        PATH="$PATH:/usr/local/MacGPG2/bin" # Only needed if present but oh well
+        PATH="$PATH:/usr/local/MacGPG2/bin" # Only needed if present... oh well
         export PATH
         MANPATH="/usr/share/man" # RESETS!
         MANPATH="$MANPATH:/usr/local/share/man"
@@ -120,12 +138,7 @@ fi
 # =============================================================================
 # Personal PATH and /opt-installed binaries
 export PATH="$PERSONAL_BINARIES_HOME:$PATH"
-export PATH="/opt/nvim/bin:$PATH"
-export PATH="/opt/nodenv/bin:$PATH"
-export PATH="/opt/pyenv/bin:$PATH"
-export PATH="/opt/plenv/bin:$PATH"
-export PATH="/opt/rbenv/bin:$PATH"
-export PATH="/opt/tree-sitter/bin:$PATH"
+# Install  nvim, nodenv, pyenv, plenv, rbenv, tree-sitter
 
 # Editors
 export LANG='en_US.UTF-8'
@@ -172,10 +185,8 @@ export PATH="$NODENV_ROOT/bin:$PATH"
 if which nodenv > /dev/null; then eval "$(nodenv init -)"
 else echo "Missing 'nodenv', skipping its config"; fi
 
-# Ruby
-export PATH="$RUBYENV_ROOT/bin:$PATH"
-if which rbenv > /dev/null; then eval "$(rbenv init -)"
-else echo "Missing 'rbenv', skipping its config"; fi
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # Perl
 export PATH="$PLENV_ROOT/bin:$PATH"
@@ -185,6 +196,9 @@ else echo "Missing 'plenv', skipping its config"; fi
 # GHCUP (Haskell; cabal etc)
 [ -f "$XDG_DATA_HOME/ghcup/env" ] && . "$XDG_DATA_HOME/ghcup/env" # ghcup-env
 export PATH="$XDG_CONFIG_HOME/cabal/bin:$PATH"
+
+# Cargo
+if which cargo > /dev/null; then source "$XDG_DATA_HOME/cargo/env"; fi
 
 
 # Some aliases
@@ -203,6 +217,10 @@ set_git_aliases() {
     export GIT_ALIAS_LOGGA_GPG="$tab$a_date $s_hash$refs $a_subject$c_name %G? %GK"
 }
 set_git_aliases
+
+command -v df >/dev/null && df() {
+    command df --exclude-type=tmpfs --exclude-type=devtmpfs -h --print-type "$@"
+}
 
 # (git)hub
 command -v hub >/dev/null && eval "$(hub alias -s)"
