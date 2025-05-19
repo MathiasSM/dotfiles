@@ -125,7 +125,8 @@ if [ "$OS" = "macos" ]; then
     }
     mimic_path_helper
     # Put brew paths
-    eval "$(/usr/local/bin/brew shellenv)"
+    [ -f "/usr/local/bin/brew" ] && eval "$(/usr/local/bin/brew shellenv)" # Intel
+    [ -f "/opt/homebrew/bin/brew" ] && eval "$(/opt/homebrew/bin/brew shellenv)" # Apple Sillican
     # gnu-utils manual pages (binaries handled by zprezto)
     export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
     # Link homebrew's Postgres
@@ -218,7 +219,7 @@ set_git_aliases() {
 }
 set_git_aliases
 
-command -v df >/dev/null && df() {
+command -v df >/dev/null && function df() {
     command df --exclude-type=tmpfs --exclude-type=devtmpfs -h --print-type "$@"
 }
 
