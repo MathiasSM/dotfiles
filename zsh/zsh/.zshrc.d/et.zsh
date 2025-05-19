@@ -4,7 +4,7 @@
 function tunnel() {
     echo "Opening SSH tunnel..."
     local port="${1:-2022}"
-    ssh -L $port:localhost:$port -f -NT \
+    ssh -L "$port":localhost:"$port" -f -NT \
         "-o ServerAliveInterval=5" \
         "-o ServerAliveCountMax=6" \
         "-o ConnectTimeout=30" \
