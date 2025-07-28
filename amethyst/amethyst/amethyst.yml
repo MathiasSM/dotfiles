@@ -121,7 +121,12 @@ decrease-main:
 # ==============================================================================
 
 # Floating windows
-floating: []
+floating:
+  - "com.tinyspeck.slackmacgap"
+  - id: "com.googlecode.iterm2"
+    window-titles: ["Hotkey"]
+  - id: "com.amazon.Amazon-Chime"
+    window-titles: ["Amazon Chime"]
 floating-is-blacklist: true
 float-small-windows: true
 
@@ -165,13 +170,13 @@ focus-cw:
 # Focus next/prev screen
 focus-screen-ccw:
   mod: mod1
-  key: p
+  key: '≠' # My way of disabling this mapping
 focus-screen-cw:
   mod: mod1
-  key: n
+  key: '≠' # My way of disabling this mapping
 
 # Focus a specific screen
-focus-screen-1:
+focus-screen0:
   mod: mod1
   key: '['
 focus-screen-2:
