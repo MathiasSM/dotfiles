@@ -1,0 +1,69 @@
+#!/usr/bin/env zsh
+
+# =============================================================================
+#   file                   | +l+i | +l-i | -l+i | -l-i | note
+# - /etc/zshenv            | true | true | true | true |
+# - $ZDOTDIR/.zshenv       | true | true | true | true |
+# - /etc/zprofile          | true | true |      |      | macos path_helper
+# - $ZDOTDIR/.zprofile     | true | true |      |      |
+# - /etc/zshrc             | true |      | true |      |
+# > $ZDOTDIR/.zshrc        | true |      | true |      |
+# - /etc/zlogin            | true | true |      |      |
+# - $ZDOTDIR/.zlogin       | true | true |      |      |
+# - /etc/zlogout           | true | true |      |      | on exit
+# - $ZDOTDIR/.zlogout      | true | true |      |      | on exit
+# =============================================================================
+#
+# This file MUST get sourced by .zshrc. It's only meant for interactive shells
+#
+# This configures zprezto modules to load.
+#
+# https://github.com/sorin-ionescu/prezto/blob/master/modules/README.md
+#
+# -----------------------------------------------------------------------------
+
+
+
+# Load modules
+# =============================================================================
+
+# Make gtool replace tool in interactive shells
+# https://github.com/sorin-ionescu/prezto/tree/master/modules/gnu-utility
+#
+# Enable completions from zsh-completions project
+# https://github.com/sorin-ionescu/prezto/blob/master/modules/completion
+#
+# Syntax-autosuggestion: Fish-inspired stuff.
+#
+# MUST follow this order.
+zstyle ':prezto:load' pmodule \
+  'gnu-utility' \
+  'completion' \
+  'syntax-highlighting'       \
+  'history-substring-search'  \
+  'autosuggestions' \
+  'prompt'
+
+
+
+# Configure
+# =============================================================================
+
+# Colors? Always
+zstyle ':prezto:*:*' color 'yes'
+# Premade aliases? Never
+zstyle ':prezto:*:*:alias' skip 'yes'
+
+# REPL Syntax highlighting
+zstyle ':prezto:module:syntax-highlighting' highlighters \
+  'main'     \
+  'brackets' \
+  'pattern'  \
+  'line'     \
+  'cursor'   \
+  'root'
+
+# Prompt theme
+zstyle ':prezto:module:prompt' theme 'pure'
+zstyle ':prezto:module:prompt:pure:git:stash' show yes
+

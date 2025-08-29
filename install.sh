@@ -18,9 +18,8 @@ LOG_GROUP_SEP="    "
 
 # For the following lists, feel free to comment out any
 APPS_FOR_HOME=(
+    "_home"
     "ssh"
-    "zsh"
-    "env"
     "xorg"
 )
 APPS_FOR_XDG=(
@@ -38,6 +37,7 @@ APPS_FOR_XDG=(
     "variety"
     "xmobar"
     "xmonad"
+    "zsh"
 )
 
 # https://github.com/neovim/neovim/releases
@@ -454,6 +454,7 @@ link_app() {
 
 link_apps_for(){
     debug "link_apps_for $1"
+
     local apps_list=()
     local target=
 
@@ -514,6 +515,15 @@ run_app_hook() {
         debug "- Found $hook_name hook for $app. Running."
        "$hook" "$app"
     fi
+}
+
+post_zsh(){
+    debug "post_zsh"
+    is_delinking && return
+    echo "$LOG_PREFIX Saving DOTFILES location to .zshenv.d"
+    echo "export DOTFILES='$DOTFILES'" > "$HOME/.env/dotfiles"
+    echo "$LOG_PREFIX Linking ~/.zshenv to ZDOTDIR"
+    is_dry_run || [[ -L $HOME/.zshenv ]] || ln -s "$ZDOTDIR/.zshenv" "$HOME/.zshenv"
 }
 
 post_variety(){
