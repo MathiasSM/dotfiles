@@ -6,10 +6,9 @@
 # Use GIT_TRACE=1 to debug if needed
 
 [alias]
-	log-pretty = "!f(){ git log --decorate --date=short --graph --pretty=format:\"$GIT_ALIAS_LOG\"; }; f"
-	lg         = "!GIT_ALIAS_LOG=$GIT_ALIAS_LOGG git log-pretty"
-	lga        = "!GIT_ALIAS_LOG=$GIT_ALIAS_LOGGA git log-pretty"
-	lgpg       = "!GIT_ALIAS_LOG=$GIT_ALIAS_LOGGA_GPT git log-pretty"
+	lg         = "!f(){ git log --decorate --date=short --graph --pretty=format:\"$GIT_ALIAS_LOGG\"; }; f"
+	lga        = "!f(){ git log --decorate --date=short --graph --pretty=format:\"$GIT_ALIAS_LOGGA\" --all; }; f"
+	lgpg       = "!f(){ git log --decorate --date=short --graph --pretty=format:\"$GIT_ALIAS_LOGGA_GPG\" --all; }; f"
 
 	last       = log -1 --numstat
 	logf       = log -u --follow
