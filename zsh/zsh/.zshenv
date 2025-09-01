@@ -27,8 +27,8 @@
 # setopt XTRACE
 
 # Load env
-source "$HOME/.shellenv"
-source "$HOME/.dotfiles"
+source "$HOME/.env/shellenv"
+source "$HOME/.env/dotfiles"
 
 # Set ZDOTDIR
 [ -d "$XDG_STATE_HOME/zsh" ] || mkdir -p "$XDG_STATE_HOME/zsh"
