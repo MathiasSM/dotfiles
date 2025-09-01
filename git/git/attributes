@@ -1,0 +1,439 @@
+# vim:ft=gitattributes foldmethod=marker
+
+
+# Auto detect text files and perform LF normalization
+*                      text=auto
+# The above will handle all files NOT found below
+
+
+# Text {{{
+# ==============================================================================
+
+# Documentation {{{
+# ------------------------------------------------------------------------------
+*.txt                  text
+# Repo "known" files
+# --------------------------------------
+AUTHORS                text
+CHANGELOG              text
+CHANGES                text
+CONTRIBUTING           text
+COPYING                text
+copyright              text
+*COPYRIGHT*            text
+INSTALL                text
+license                text
+LICENSE                text
+NEWS                   text
+readme                 text
+*README*               text
+TODO                   text
+# Other markup files
+# --------------------------------------
+*.adoc                 text
+*.textile              text
+# }}}
+
+# Templating files {{{
+# ------------------------------------------------------------------------------
+*.dot                  text
+*.ejs                  text
+*.erb                  text
+*.haml                 text
+*.handlebars           text
+*.hbs                  text
+*.hbt                  text
+*.jade                 text
+*.latte                text
+*.mustache             text
+*.njk                  text
+*.phtml                text
+*.svelte               text
+*.tmpl                 text
+*.tpl                  text
+*.twig                 text
+*.vue                  text
+# }}}
+
+# Config files {{{
+# ------------------------------------------------------------------------------
+# General
+# --------------------------------------
+*.cnf                  text
+*.conf                 text
+*.config               text
+# Common patterns
+# --------------------------------------
+*.*rc                  text
+*.*ignore              text
+# Git
+# --------------------------------------
+.gitattributes         text
+.gitconfig             text
+# Other
+# --------------------------------------
+.htaccess              text
+package.json           text eol=lf
+.prettierrc            text
+browserslist           text
+.editorconfig          text
+*.env                  text
+# Lockfiles (hide diff)
+# --------------------------------------
+*.lock                 text -diff
+yarn.lock              text -diff
+pnpm-lock.yaml         text -diff eol=lf
+package-lock.json      text -diff eol=lf
+# }}}
+
+# Useful {{{
+# ------------------------------------------------------------------------------
+# Prevents massive diffs - vendor
+# --------------------------------------
+**/.yarn/releases/**   -text -diff
+**/.yarn/plugins/**    -text -diff
+# Prevents massive diffs - built
+# --------------------------------------
+dist/**                -text -diff
+build/**               -text -diff
+# Files where line endings should be preserved
+# --------------------------------------
+*.patch                -text
+# SVG treated as text by default.
+# --------------------------------------
+*.svg                  text
+# }}}
+
+# Programming {{{
+# ==============================================================================
+
+# Shell {{{
+# ------------------------------------------------------------------------------
+*.sh                   text eol=lf
+*.bash                 text eol=lf
+*.fish                 text eol=lf
+*.ksh                  text eol=lf
+*.zsh                  text eol=lf
+# make
+# --------------------------------------
+[Mm]akefile            text
+# }}}
+
+# Data {{{
+# ------------------------------------------------------------------------------
+*.csv                  text eol=crlf
+*.tsv                  text
+*.tab                  text
+# }}}
+
+# Web {{{
+# ------------------------------------------------------------------------------
+# HTML / XML
+# --------------------------------------
+*.htm                  text
+*.html                 text
+*.xhtml                text
+# CSS
+# --------------------------------------
+*.css                  text
+*.s[ca]css             text
+*.less                 text
+*.styl                 text
+# JS / TS
+# --------------------------------------
+*.coffee               text
+*.[tj]s                text
+*.[tj]sx               text
+*.[mc]js               text
+# Sourcemaps
+# --------------------------------------
+*.map                  text -diff
+# }}}
+
+# Serialisation / data transfer formats {{{
+# --------------------------------------
+*.json                 text
+*.toml                 text
+*.xml                  text
+*.yaml                 text
+*.yml                  text
+# }}}
+
+# Python {{{
+# ------------------------------------------------------------------------------
+# Binary files
+# --------------------------------------
+*.db                   binary
+*.p                    binary
+*.pkl                  binary
+*.pickle               binary
+*.pyc                  binary export-ignore
+*.pyo                  binary export-ignore
+*.pyd                  binary
+# Jupyter notebook
+# --------------------------------------
+*.ipynb                text eol=lf
+# }}}
+
+# Perl {{{
+# ------------------------------------------------------------------------------
+# Source files
+# }}}
+
+# Java {{{
+# ------------------------------------------------------------------------------
+# Other text files
+# --------------------------------------
+*.df                   text
+*.jsp                  text
+*.jspf                 text
+*.jspx                 text
+*.properties           text
+*.tld                  text
+*.tag                  text
+*.tagx                 text
+# Binaries
+# --------------------------------------
+*.class                binary
+*.dll                  binary
+*.ear                  binary
+*.jar                  binary
+*.so                   binary
+*.war                  binary
+*.jks                  binary
+# Common build-tool wrapper scripts 
+# --------------------------------------
+mvnw                   text eol=lf
+gradlew                text eol=lf
+# }}}
+
+# SQL {{{
+# ------------------------------------------------------------------------------
+# }}}
+
+# Windows files {{{
+# ------------------------------------------------------------------------------
+*.bat                  text eol=crlf
+*.cmd                  text eol=crlf
+*.ps1                  text eol=crlf
+# }}}
+
+# Other {{{
+# ------------------------------------------------------------------------------
+*.vim                  text eol=lf
+Dockerfile             text
+*.sql                  text
+*.psql                 text
+# }}}
+
+# Built-in patterns https://git-scm.com/docs/gitattributes {{{
+# ------------------------------------------------------------------------------
+*.ada                  text diff=ada
+*.bash                 text diff=bash
+*.sh                   text diff=bash
+*.bibtex               text diff=bibtex
+*.c                    text diff=cpp
+*.h                    text diff=cpp
+*.cc                   text diff=cpp
+*.hh                   text diff=cpp
+*.cpp                  text diff=cpp
+*.hpp                  text diff=cpp
+*.c++                  text diff=cpp
+*.h++                  text diff=cpp
+*.css                  text diff=css
+*.scss                 text diff=css
+*.cs                   text diff=csharp
+*.csx                  text diff=csharp
+*.ex                   text diff=elixir
+*.exs                  text diff=elixir
+*.f                    text diff=fortran
+*.for                  text diff=fortran
+*.f90                  text diff=fortran
+*.f95                  text diff=fortran
+*.f03                  text diff=fortran
+*.fountain             text diff=fountain
+*.go                   text diff=golang
+*.htm                  text diff=html
+*.html                 text diff=html
+*.xhtml                text diff=html
+*.java                 text diff=java
+*.groovy               text diff=java
+*.scala                text diff=java
+*.gradle               text diff=java
+*.kt                   text diff=kotlin
+*.kts                  text diff=kotlin
+*.ktm                  text diff=kotlin
+*.markdown             text diff=markdown
+*.md                   text diff=markdown
+*.mdwn                 text diff=markdown
+*.mdown                text diff=markdown
+*.mkd                  text diff=markdown
+*.mkdn                 text diff=markdown
+*.mdx                  text diff=markdown
+*.m                    text diff=matlab
+*.mu                   text diff=matlab
+*.p                    text diff=pascal
+*.pp                   text diff=pascal
+*.pas                  text diff=pascal
+*.pl                   text diff=perl
+*.pm                   text diff=perl
+*.php                  text diff=php
+*.pxd                  text diff=python
+*.py                   text diff=python
+*.py3                  text diff=python
+*.pyw                  text diff=python
+*.pyx                  text diff=python
+*.pyz                  text diff=python
+*.pyi                  text diff=python
+*.rb                   text diff=ruby
+*.rs                   text diff=rust
+*.scm                  text diff=scheme
+*.sps                  text diff=scheme
+*.sls                  text diff=scheme
+*.sld                  text diff=scheme
+*.rkt                  text diff=scheme
+*.scrbl                text diff=scheme
+*.tex                  text diff=tex
+*.latex                text diff=tex
+
+
+# }}}
+
+# Binary Documents via Pandoc {{{
+# --------------------------------------
+*.doc                  diff=pandoc
+*.docx                 diff=pandoc
+*.docm                 diff=pandoc
+*.rtf                  diff=pandoc
+*.odp                  diff=pandoc
+*.fodp                 diff=pandoc
+*.epub                 diff=pandoc
+
+# }}}
+
+# }}}
+
+# }}}
+
+
+
+# Binary files {{{
+# ==============================================================================
+
+# Graphics {{{
+# ------------------------------------------------------------------------------
+*.ai                   binary
+*.bmp                  binary
+*.eps                  binary
+*.gif                  binary
+*.gifv                 binary
+*.ico                  binary
+*.jng                  binary
+*.jp2                  binary
+*.jpg                  binary
+*.jpeg                 binary
+*.jpx                  binary
+*.jxr                  binary
+*.pdf                  binary
+*.png                  binary
+*.psb                  binary
+*.psd                  binary
+*.svgz                 binary
+*.tif                  binary
+*.tiff                 binary
+*.wbmp                 binary
+*.webp                 binary
+# }}}
+
+# Audio {{{
+# ------------------------------------------------------------------------------
+*.kar                  binary
+*.m4a                  binary
+*.mid                  binary
+*.midi                 binary
+*.mp3                  binary
+*.ogg                  binary
+*.ra                   binary
+# }}}
+
+# Video {{{
+# --------------------------------------
+*.3gpp                 binary
+*.3gp                  binary
+*.as                   binary
+*.asf                  binary
+*.asx                  binary
+*.avi                  binary
+*.fla                  binary
+*.flv                  binary
+*.m4v                  binary
+*.mng                  binary
+*.mov                  binary
+*.mp4                  binary
+*.mpeg                 binary
+*.mpg                  binary
+*.ogv                  binary
+*.swc                  binary
+*.swf                  binary
+*.webm                 binary
+# }}}
+
+# Archives {{{
+# ------------------------------------------------------------------------------
+*.7z                   binary
+*.bz                   binary
+*.bz2                  binary
+*.bzip2                binary
+*.gz                   binary
+*.lz                   binary
+*.lzma                 binary
+*.rar                  binary
+*.tar                  binary
+*.taz                  binary
+*.tbz                  binary
+*.tbz2                 binary
+*.tgz                  binary
+*.tlz                  binary
+*.txz                  binary
+*.xz                   binary
+*.Z                    binary
+*.zip                  binary
+*.zst                  binary
+# }}}
+
+# Fonts {{{
+# ------------------------------------------------------------------------------
+*.ttf                  binary
+*.eot                  binary
+*.otf                  binary
+*.woff                 binary
+*.woff2                binary
+# }}}
+
+# Other {{{
+# ------------------------------------------------------------------------------
+# Common executable binaries
+*.exe                  binary
+*.pyc                  binary
+*.out                  binary
+*.app                  binary
+# Compiled Object files
+*.slo                  binary
+*.lo                   binary
+*.o                    binary
+*.obj                  binary
+# Precompiled Headers
+*.gch                  binary
+*.pch                  binary
+# Compiled Dynamic libraries
+*.so                   binary
+*.dylib                binary
+*.dll                  binary
+# Compiled Static libraries
+*.lai                  binary
+*.la                   binary
+*.a                    binary
+*.lib                  binary
+# }}}
+
+# }}}

@@ -1,0 +1,10 @@
+# vim: ft=gitconfig
+
+[user]
+	name = Mathias San Miguel
+	email = mathiassanmiguel@gmail.com
+	signingkey = mathiassanmiguel@gmail.com
+	useConfigOnly
+
+[credential "https://github.com"]
+	username = mathiassm

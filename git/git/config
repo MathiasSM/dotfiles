@@ -1,14 +1,16 @@
 # vim: ft=gitconfig
-# Default User
+# Identities
 # ===========================================================================
 
-[user]
-	name = Mathias San Miguel
-	email = mathiassanmiguel@gmail.com
-	signingkey = mathiassanmiguel@gmail.com
-	useConfigOnly
+# Default
 [credential]
 	username = mathiassm
+
+[includeIf "hasconfig:remote.*.url:**github.com/**"]
+	path = config_github
+[include]
+	path = config_private
+
 
 
 # General behavior
@@ -18,60 +20,96 @@
 	eol = lf
 	safecrlf
 	pager = less -SR
-[color]
-	ui = auto
-	interactive = always
 
-[grep]
-	lineNumber
-	extendedRegexp
-
-[status]
-	showStash
-[log]
-	decorate = auto
-	abbrevCommit
-	date = short
-	follow
+[column]
+	ui = auto column
+	status = never
+[help]
+	autoCorrect = prompt
+[rerere]
+	enabled = true
 [versionsort]
 	suffix = "-pre" "-rc" # v0.5 -> v1.0-pre1 -> v1.0-pre2 -> v1.0-rc1 -> v1.0
 
-[tag]
-	gpgSign = true
-[commit]
-	gpgsign = false
-[push]
-	gpgSign = if-asked
-	recurseSubmodules = check
-[pull]
-	ff = only
+# Color
+# ------------------------------------
+
+[color]
+	ui = auto
+	interactive = always
+	pager = true
+[blame]
+	coloring = highlightRecent
+[color "blame"]
+	highlightRecent = \
+		243,8 month ago,\
+		248,5 months ago,\
+		251,3 months ago,\
+		253,2 months ago,\
+		254,1 month ago,\
+		white
 
 
-# Aliases
+
+# Subcommands
 # ===========================================================================
 
-[alias]
-	last     = log -1 --numstat
-	unstage  = reset HEAD --
-	logg     = "!f(){ git log --decorate --date=short --graph       --pretty=format:\"$GIT_ALIAS_LOGG\"; }; f"
-	logga    = "!f(){ git log --decorate --date=short --graph --all --pretty=format:\"$GIT_ALIAS_LOGGA\"; }; f"
-	loggagpg = "!f(){ git log --decorate --date=short --graph --all --pretty=format:\"$GIT_ALIAS_LOGGA_GPG\"; }; f"
-	logf     = log -u --follow
+[blame]
+	markUnblamableLines = true
+	markIgnoredLines = true
+[checkout]
+	guess = true
+[commit]
+	gpgSign = false
+[fetch]
+	all = true
+	prune = false
+	pruneTags = false
+[gpg]
+	program = gpg
+[grep]
+	lineNumber = true
+	extendedRegexp = true
+[log]
+	abbrevCommit = true
+	date = iso
+	decorate = auto
+	follow = true
+[pull]
+	ff = only
+[push]
+	autoSetupRemote = true
+	default = nothing
+	followTags = true
+	gpgSign = if-asked
+	recurseSubmodules = check
+[stash]
+	showIncludeUntracked = true
+	showPatch = true
+[status]
+	showStash = true
+	short = true
+	branch = true
+	submoduleSummary = true
+[submodule]
+	recurse = true
+[tag]
+	forceSignAnnotated = true
+	gpgSign = true
+
 
 
 # External tools (diff, merge, git-subcommands)
 # ===========================================================================
 
-[mergetool]
-	prompt = true
 [merge]
+	prompt = true
 	tool = nvimdiff
 [mergetool "nvimdiff"]
 	cmd = nvim -c "Gdiffsplit!" "$MERGED"
 
-[difftool]
-	prompt = true
 [diff]
+	prompt = true
 	tool = nvimdiff
 [difftool "nvimdiff"]
 	cmd = nvim -d "$LOCAL" "$REMOTE"
@@ -82,5 +120,13 @@
 	process = git-lfs filter-process
 	required
 
-[gpg]
-	program = gpg
+[diff "pandoc"]
+	textconv=pandoc — to=markdown
+	prompt = false
+
+
+# Aliases
+# ===========================================================================
+
+[include]
+	path = config_alias

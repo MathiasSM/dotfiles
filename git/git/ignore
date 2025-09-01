@@ -10,7 +10,7 @@
 # ==============================================================================
 
 # Linux
-*~ # Not sure if this is only vim
+*~
 .fuse_hidden*
 .directory
 .Trash-*
@@ -189,4 +189,9 @@ xcuserdata/
 .settings/
 .classpath
 
+# }}}
+# Built resources {{{
+# ==============================================================================
+build/
+/generated*/
 # }}}

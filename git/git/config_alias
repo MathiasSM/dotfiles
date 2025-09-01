@@ -1,0 +1,30 @@
+# vim: ft=gitconfig
+
+# Aliases
+# ===========================================================================
+
+# Use GIT_TRACE=1 to debug if needed
+
+[alias]
+	log-pretty = "!f(){ git log --decorate --date=short --graph --pretty=format:\"$GIT_ALIAS_LOG\"; }; f"
+	lg         = "!GIT_ALIAS_LOG=$GIT_ALIAS_LOGG git log-pretty"
+	lga        = "!GIT_ALIAS_LOG=$GIT_ALIAS_LOGGA git log-pretty"
+	lgpg       = "!GIT_ALIAS_LOG=$GIT_ALIAS_LOGGA_GPT git log-pretty"
+
+	last       = log -1 --numstat
+	logf       = log -u --follow
+
+	diff-names = diff --name-status
+	diff-stat  = diff --stat
+	diff-words = diff --color-words='[^[:space:]]|([[:alnum:]]|UTF_8_GUARD)+'
+	tag-list   = stag = tag -l --sort=v:refname
+
+	type       = cat-file -t
+	dump       = cat-file -p
+	unstage    = reset HEAD --
+
+	edit-unmerged      = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; vim `f`"
+	add-unmerged       = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
+	checkout-recursive = "!f() { git checkout $1 && git submodule update --recursive; }; f"
+
+
