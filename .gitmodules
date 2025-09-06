@@ -1,9 +1,0 @@
-[submodule "zsh/.zprezto"]
-	path = zsh/.zprezto
-	url = git@github.com:sorin-ionescu/prezto.git
-[submodule "tmux/tmux/plugins/tpm"]
-	path = tmux/tmux/plugins/tpm
-	url = git@github.com:tmux-plugins/tpm.git
-[submodule "alacritty/alacritty/catppuccin"]
-	path = alacritty/alacritty/catppuccin
-	url = git@github.com:catppuccin/alacritty.git
