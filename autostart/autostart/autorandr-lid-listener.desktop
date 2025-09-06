@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Autorandr Lid Listener
+Comment=Trigger autorandr whenever the lid state changes
+Icon=monitor
+Type=Application
+Exec=bash -c "stdbuf -oL libinput debug-events | egrep --line-buffered '^ event[0-9]+\s+SWITCH_TOGGLE\s' | while read line; do autorandr --change; done" &
+NoDisplay=true
+# Taken from the git repository, as the debian pkg does not include it
+# https://github.com/phillipberndt/autorandr/blob/1.12.1/contrib/etc/xdg/autostart/autorandr-lid-listener.desktop

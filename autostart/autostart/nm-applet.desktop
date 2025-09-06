@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Network Manager Applet
+Comment=Manage your network connections
+Icon=nm-device-wireless
+Exec=nm-applet &
+Terminal=false
+Type=Application

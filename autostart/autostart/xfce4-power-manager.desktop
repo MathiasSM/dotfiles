@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Power Manager
+Comment=Power management for the Xfce desktop
+Icon=org.xfce.powermanager
+Exec=xfce4-power-manager --daemon
+Terminal=false
+Type=Application
+StartupNotify=false
