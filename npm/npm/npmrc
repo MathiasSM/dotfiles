@@ -3,3 +3,8 @@ prefix=${XDG_DATA_HOME}/npm
 cache=${XDG_CACHE_HOME}/npm
 init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
 tmp=${XDG_RUNTIME_DIR}/npm
+
+init-author-name="Mathias San Miguel"
+init-author-url="https://mathiassm.dev"
+init-license="MIT"
+init-version="0.0.1"
