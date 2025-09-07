@@ -1,0 +1,21 @@
+[general]
+import = ["$XDG_CONFIG_HOME/alacritty/catppuccin/catppuccin-mocha.toml"]
+
+[window]
+decorations = "None"
+dynamic_padding = true
+opacity = 0.9
+padding = { x = 0, y = 0 }
+
+[scrolling]
+history = 100000
+
+[font.normal]
+family = "Hack Nerd Font Mono"
+style = "Regular"
+
+[selection]
+save_to_clipboard = true
+
+[mouse]
+hide_when_typing = true
