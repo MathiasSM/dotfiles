@@ -11,7 +11,8 @@ set -o pipefail  # don't hide errors within pipes
 # ==============================================================================
 TMPDIR="${TMPDIR:-/tmp}"
 DOTFILES="${DOTFILES:-$HOME/.dotfiles}"
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
 # Log Formatting
 LOG_GROUP_SEP="    "
@@ -30,9 +31,14 @@ APPS_FOR_XDG=(
     "ghcup"
     "git"
     "gnupg"
+    "irb"
     "karabiner"
+    "mise"
+    "npm"
     "pgcli"
     "psql"
+    "python"
+    "rofi"
     "tmux"
     "variety"
     "xmobar"
@@ -61,9 +67,7 @@ FLATPAK_APPS=(
 
 # NOTE: These need a install_opt_<app> to be defined!
 OPT_APPS=(
-    "neovim"
-    "pyenv"
-    "nodenv"
+    "nvim"
     "ghcup"
 )
 
@@ -80,14 +84,6 @@ HOMEBREW_URL="https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
 FLATHUB_URL="https://dl.flathub.org/repo/flathub.flatpakrepo"
 
 GITHUB="https://github.com"
-PYENV_URL="$GITHUB/pyenv/pyenv.git"
-PYENV_CCACHE_URL="$GITHUB/pyenv/pyenv-ccache.git"
-PYENV_VIRTUALENV_URL="$GITHUB/pyenv/pyenv-virtualenv.git"
-
-NODENV_URL="$GITHUB/nodenv/nodenv.git"
-NODENV_BUILD_URL="$GITHUB/nodenv/node-build.git"
-NODENV_UPDATE_URL="$GITHUB/nodenv/nodenv-update.git"
-NODENV_DEFAULT_PACKAGES_URL="$GITHUB/nodenv/nodenv-default-packages.git"
 
 NEOVIM_URL_FORMAT="$GITHUB/neovim/neovim/releases/download/%s/%s.tar.gz"
 
@@ -135,7 +131,6 @@ NVIM_RELEASE_NAME=
 
 # TODO: macos version?
 GHCUP_URL="https://downloads.haskell.org/~ghcup/$ARCH-linux-ghcup"
-# TODO: goup, rustup
 
 
 # State getters
@@ -312,23 +307,25 @@ install_flatpak() {
 install_opt() {
     debug "install_opt"
     local num_apps="${#OPT_APPS[@]}"
-    debug "- There are $num_apps apps configured..."
+    debug "- There are $num_apps apps configured: ${OPT_APPS[*]}"
     local i=1
     for app in "${OPT_APPS[@]}"; do
         printf -v log_group_for "[%2d/%2d] %s" $i $num_apps $app
         start_log_group "$log_group_for"
         "install_opt_$app"
+	debug "- Linking to ~/.local"
+	is_dry_run || stow -d /opt -t $HOME/.local $app
         end_log_group
         (( i++ ))
     done
 }
 
-install_opt_neovim() {
-    debug "install_neovim"
+install_opt_nvim() {
+    debug "install_nvim"
     if is_force_reinstall; then
         echo "$LOG_PREFIX Forcing reinstall of neovim"
-    elif [ -d "/opt/$NVIM_RELEASE_NAME" ]; then
-        echo "$LOG_PREFIX [WARNING] nvim already present, skipping."
+    elif [ -d "/opt/nvim" ]; then
+        echo "$LOG_PREFIX [WARNING] /opt/nvim already present, skipping."
         return
     fi
     local tmpdir=$(mktemp -p "$TMPDIR" -d "$MKTEMP_TEMPLATE")
@@ -344,68 +341,9 @@ install_opt_neovim() {
     fi
     debug "- Removing any old nvim from /opt"
     is_dry_run || sudo rm -rf "/opt/nvim" "/opt/$NVIM_RELEASE_NAME"
-    is_dry_run || sudo rm -rf "/opt/nvim" "/opt/nvim"
     debug "- Extracting to /opt"
     is_dry_run || sudo tar -C "/opt" -xzf "$tmpdir/nvim.tar.gz"
-    is_dry_run || sudo ln -s "/opt/$NVIM_RELEASE_NAME" "/opt/nvim"
-}
-
-install_opt_pyenv() {
-    debug "install_pyenv"
-    if is_force_reinstall; then
-        echo "$LOG_PREFIX Forcing reinstall of pyenv"
-    elif [ -d "/opt/pyenv" ]; then
-        echo "$LOG_PREFIX [WARNING] pyenv already present, skipping."
-        return
-    fi
-    local tmpdir=$(mktemp -p "$TMPDIR" -d "$MKTEMP_TEMPLATE")
-    debug "- Cloning into $tmpdir"
-    is_dry_run || git clone "$GIT_FLAGS" "$PYENV_URL" "$tmpdir"
-    debug "- Moving into /opt"
-    is_dry_run || sudo rm -rf "/opt/pyenv"
-    is_dry_run || sudo mv "$tmpdir" "/opt/pyenv"
-    debug "- Running pyenv init"
-    is_dry_run || eval "$(/opt/pyenv/bin/pyenv init -)"
-    local plugins="$(pyenv root)/plugins"
-    install_opt_toolenv_plugin "$plugins" "pyenv-ccache" "$PYENV_CCACHE_URL"
-    install_opt_toolenv_plugin "$plugins" "pyenv-virtualenv" "$PYENV_VIRTUALENV_URL"
-}
-
-install_opt_nodenv() {
-    debug "install_nodenv"
-    if is_force_reinstall; then
-        echo "$LOG_PREFIX Forcing reinstall of nodenv"
-    elif [ -d "/opt/nodenv" ]; then
-        echo "$LOG_PREFIX [WARNING] nodenv already present, skipping."
-        return
-    fi
-    local tmpdir=$(mktemp -p "$TMPDIR" -d "$MKTEMP_TEMPLATE")
-    debug "- Cloning into $tmpdir"
-    is_dry_run || git clone "$GIT_FLAGS" "$NODENV_URL" "$tmpdir"
-    debug "- Moving into /opt"
-    is_dry_run || sudo rm -rf "/opt/nodenv"
-    is_dry_run || sudo mv "$tmpdir" "/opt/nodenv"
-    debug "- Running nodenv init"
-    is_dry_run || eval "$(/opt/nodenv/bin/nodenv init -)"
-    local plugins="$(nodenv root)/plugins"
-    install_opt_toolenv_plugin "$plugins" "node-build" "$NODENV_BUILD_URL"
-    install_opt_toolenv_plugin "$plugins" "nodenv-update" "$NODENV_UPDATE_URL"
-    install_opt_toolenv_plugin "$plugins" "nodenv-default-packages" "$NODENV_DEFAULT_PACKAGES_URL"
-}
-
-install_opt_toolenv_plugin() {
-    local plugins_path="$1"
-    local plugin_name="$2"
-    local plugin_url="$3"
-    debug "- Plugin:$plugin_name"
-    if is_force_reinstall; then
-        echo "$LOG_PREFIX Forcing reinstall of $plugin_name"
-        is_dry_run || rm -rf "$plugins_path/$plugin_name"
-    elif [ -d "$plugins_path/$plugin_name" ]; then
-        echo "$LOG_PREFIX [WARNING] $plugin_name already present, skipping."
-        return
-    fi
-    is_dry_run || git clone "$GIT_FLAGS" "$plugin_url" "$plugins_path/$plugin_name"
+    is_dry_run || sudo mv "/opt/$NVIM_RELEASE_NAME" "/opt/nvim"
 }
 
 install_opt_ghcup() {
@@ -413,12 +351,13 @@ install_opt_ghcup() {
     if is_force_reinstall; then
         echo "$LOG_PREFIX Forcing reinstall of ghcup"
     elif [ -d "/opt/ghcup" ]; then
-        echo "$LOG_PREFIX [WARNING] ghcup already present, skipping."
+        echo "$LOG_PREFIX [WARNING] /opt/ghcup already present, skipping."
         return
     fi
     local tmpdir=$(mktemp -p "$TMPDIR" -d "$MKTEMP_TEMPLATE")
     debug "- Downloading binary into $tmpdir"
     is_dry_run || curl "$CURL_FLAGS" "$GHCUP_URL" -o "$tmpdir/ghcup"
+    is_dry_run || sudo chmod +x "$tmpdir/ghcup"
     local ghcup_dir="/opt/ghcup"
     debug "- Emptying $ghcup_dir"
     is_dry_run || sudo rm -rf "$ghcup_dir"
@@ -521,7 +460,7 @@ post_zsh(){
     debug "post_zsh"
     is_delinking && return
     echo "$LOG_PREFIX Saving DOTFILES location to .zshenv.d"
-    echo "export DOTFILES='$DOTFILES'" > "$HOME/.env/dotfiles"
+    is_dry_run || echo "export DOTFILES='$DOTFILES'" > "$HOME/.env/dotfiles"
     echo "$LOG_PREFIX Linking ~/.zshenv to ZDOTDIR"
     is_dry_run || [[ -L $HOME/.zshenv ]] || ln -s "$ZDOTDIR/.zshenv" "$HOME/.zshenv"
 }
@@ -690,7 +629,7 @@ parse_args() {
             debian)
                 debug "  setting target as debian"
                 TARGET=debian
-                NVIM_RELEASE_NAME="nvim-linux64" ;;
+                NVIM_RELEASE_NAME="nvim-linux-x86_64" ;;
             redhat)
                 debug "  setting target as redhat"
                 TARGET=redhat
