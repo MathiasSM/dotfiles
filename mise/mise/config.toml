@@ -1,0 +1,13 @@
+[tools]
+cargo-binstall = "latest"
+node = "lts"
+python = "3.13"
+ruby = "3.4"
+usage = "latest"
+
+[settings.cargo]
+binstall = true
+
+[settings.rust]
+cargo_home = "{{ xdg_data_home }}/cargo"
+rustup_home = "{{ xdg_data_home }}/rust"
