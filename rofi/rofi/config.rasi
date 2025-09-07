@@ -1,0 +1,29 @@
+configuration {
+	modi: "combi,window,drun,ssh";
+	combi-modi: "window,drun,ssh";
+	combi-hide-mode-prefix: false;
+
+	font: "Noto Sans Mono 9";
+	dpi: 1;
+	hide-scrollbar: false;
+  
+	monitor: "-1";
+
+	show-icons: true;
+	sort: true;
+	threads: 0;
+
+	cycle: true;
+	display-combi: "";
+	display-drun:   " [drun]";
+	display-keys:   " [keys]";
+	display-run:    " [run] ";
+	display-ssh:    " [ssh] ";
+	display-window: " [win] ";
+
+	fixed-num-lines: true;
+	window-format: "({w}) {i}{c} - {t}";
+	window-match-fields: "all";
+}
+
+@theme "Arc-Dark"
