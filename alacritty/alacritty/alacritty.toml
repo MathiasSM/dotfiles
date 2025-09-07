@@ -1,5 +1,5 @@
 [general]
-import = ["$XDG_CONFIG_HOME/alacritty/catppuccin/catppuccin-mocha.toml"]
+import = ["themes/themes/monokai.toml"]
 
 [window]
 decorations = "None"
