@@ -1,9 +1,9 @@
 [submodule "tmux/tpm"]
-	path = tmux/tmux/plugins/tpm
+	path = _packages/tmux/tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
 [submodule "zsh/zprezto"]
-	path = zsh/zsh/zprezto
+	path = _packages/zsh/zsh/zprezto
 	url = git@github.com:sorin-ionescu/prezto.git
 [submodule "alacritty/theme"]
-	path = alacritty/alacritty/themes
+	path = _packages/alacritty/alacritty/themes
 	url = git@github.com:alacritty/alacritty-theme.git

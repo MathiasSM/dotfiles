@@ -23,28 +23,8 @@ APPS_FOR_HOME=(
     "ssh"
     "xorg"
 )
-APPS_FOR_XDG=(
-    "alacritty"
-    "amethyst"
-    "autorandr"
-    "ghc"
-    "ghcup"
-    "git"
-    "gnupg"
-    "irb"
-    "karabiner"
-    "mise"
-    "npm"
-    "pgcli"
-    "psql"
-    "python"
-    "rofi"
-    "tmux"
-    "variety"
-    "xmobar"
-    "xmonad"
-    "zsh"
-)
+APPS_FOR_XDG=( "$( ls "_packages" )" )
+
 
 # https://github.com/neovim/neovim/releases
 NVIM_RELEASE_VERSION="stable"
@@ -260,12 +240,12 @@ install_homebrew() {
 
 build_brewfile(){
     debug "build_brewfile"
-    is_dry_run || cat "$DOTFILES/macos/*.Brewfile" > "$DOTFILES/macos/Brewfile"
+    is_dry_run || cat "$DOTFILES/_os/macos/*.Brewfile" > "$DOTFILES/_os/macos/Brewfile"
 }
 
 install_brewfile(){
     debug "install_brewfile"
-    is_dry_run || brew bundle install --file "$DOTFILES/macos/Brewfile"
+    is_dry_run || brew bundle install --file "$DOTFILES/_os/macos/Brewfile"
 }
 
 
@@ -382,12 +362,13 @@ check_stow(){
 }
 
 link_app() {
-    debug "link_app $1 $2"
+    debug "link_app $1 $2 $3"
     local app=$1
-    local target=$2
+    local source=$2
+    local target=$3
     debug "- Running pre hook, stow and post hook for $app"
     run_app_hook "$app" "pre"
-    is_dry_run || stow -d "$DOTFILES" -t "$target" $STOW_FLAGS "$app"
+    is_dry_run || stow -d "$source" -t "$target" $STOW_FLAGS "$app"
     run_app_hook "$app" "post"
 }
 
@@ -399,9 +380,11 @@ link_apps_for(){
 
     if [[ "$1" == "HOME" ]]; then
         apps_list=(${APPS_FOR_HOME[@]})
+        source="$DOTFILES"
         target="$HOME"
     elif [[ "$1" == "XDG" ]]; then
         apps_list=(${APPS_FOR_XDG[@]})
+        source="$DOTFILES/_packages"
         target="$XDG_CONFIG_HOME"
     else
         echo "[ERROR] Unknown linking target: '$1'"
@@ -417,7 +400,7 @@ link_apps_for(){
     for app in "${apps_list[@]}"; do
         printf -v log_group_for "[%2d/%2d] %s" $i $num_apps $app
         start_log_group "$log_group_for"
-        link_app "$app" "$target"
+        link_app "$app" "$source" "$target"
         end_log_group
         ((i++))
     done
