@@ -9,7 +9,7 @@ xsetroot -cursor_name left_ptr	# Set cursor to the usual pointer
 
 # Locking session
 xscreensaver -no-splash &	# Screensaver on most (relevant) systemd signals
-xss-lock --ignore-sleep -- xscreensaver-command -lock & # Manage all systemd signals
+xss-lock --ignore-sleep -- xscreensaver-command -lock & # Manage systemd signals
 
 # Flare
 variety &                # Wallpaper (runs feh on its own)
@@ -23,3 +23,4 @@ nm-applet --sm-disable & # - Network Manager
 blueman-applet &         # - Bluetooth
 
 exec xmonad
+

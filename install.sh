@@ -18,11 +18,7 @@ export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 LOG_GROUP_SEP="    "
 
 # For the following lists, feel free to comment out any
-APPS_FOR_HOME=(
-    "_home"
-    "ssh"
-    "xorg"
-)
+APPS_FOR_HOME=( "_home" )
 APPS_FOR_XDG=( "$( ls "_packages" )" )
 
 
@@ -102,7 +98,7 @@ FORCE_REINSTALL=false
 SKIP_INSTALL=false
 TARGET=
 LINKING_ACTION=$LINKING_ACTION_LINKING
-STOW_FLAGS=
+STOW_FLAGS="--dotfiles"
 
 LOG_PREFIX=""
 
