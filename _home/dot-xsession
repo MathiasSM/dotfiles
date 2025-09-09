@@ -7,6 +7,10 @@ export XDG_CURRENT_DESKTOP=xmonad
 # Root X Window
 xsetroot -cursor_name left_ptr	# Set cursor to the usual pointer
 
+# Set keymaps
+setxkbmap -option caps:ctrl_modifier
+setxkbmap -option compose:menu
+
 # Locking session
 xscreensaver -no-splash &	# Screensaver on most (relevant) systemd signals
 xss-lock --ignore-sleep -- xscreensaver-command -lock & # Manage systemd signals
@@ -18,7 +22,12 @@ variety &                # Wallpaper (runs feh on its own)
 xfce4-power-manager &    # Power Manager
 
 # Other Applets
-trayer &                 # Tray bar
+stalonetray \
+    --sticky \
+    --window-strut none --window-layer bottom \
+    --vertical --geometry 1x1-20-70 \
+    --icon-gravity SE --grow-gravity SE \
+    --icon-size 32
 nm-applet --sm-disable & # - Network Manager
 blueman-applet &         # - Bluetooth
 
