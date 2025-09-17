@@ -23,7 +23,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'       # Begins underline.
 
 # Ant (Java)
 # -----------------------------------------------------------------------------
-ANT_ARGS="${ANT_ARGS:-}"
+ANT_ARGS=
 ANT_ARGS+=" -logger org.apache.tools.ant.listener.AnsiColorLogger"
 ANT_OPTS+=" -Dant.logger.defaults=$XDG_CONFIG_DIR/ant/AnsiColorLogger"
 export ANT_OPTS

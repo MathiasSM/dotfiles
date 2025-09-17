@@ -40,24 +40,4 @@
 
 
 # Start ssh-agent if not running
-ssh_agent_env_file="$XDG_CACHE_HOME/ssh-agent.env"
-ssh_agent_lifetime=1h
-if ! pgrep -u "$USER" ssh-agent >/dev/null; then
-    ssh-agent -s -t "$ssh_agent_lifetime" > "$ssh_agent_env_file"
-fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    source "$ssh_agent_env_file" >/dev/null
-fi
-
-
-# Execute code only if STDERR is bound to a TTY.
-if [[ -o INTERACTIVE && -t 2 ]]; then
-
-  # Print a random, hopefully interesting, adage.
-  if (( $+commands[fortune] )); then
-    fortune -s
-    print
-  fi
-
-fi >&2
-
+eval "$( ssh-agent )"

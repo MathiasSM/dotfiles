@@ -5,6 +5,6 @@ export TERM=xterm-256color
 
 # History
 HISTFILE="$XDG_STATE_HOME/zsh/history"
-HISTSIZE=10000
+HISTSIZE=100000
 SAVEHIST=$HISTSIZE
 

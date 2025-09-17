@@ -26,15 +26,15 @@
 # setopt SOURCE_TRACE
 # setopt XTRACE
 
-# Load env
-source "$HOME/.env/shellenv"
-source "$HOME/.env/dotfiles"
+# Load environment variables
+source "$HOME/.config/shell/vars"
+source "$HOME/.config/shell/dotfiles"
 
 # Set ZDOTDIR
 [ -d "$XDG_STATE_HOME/zsh" ] || mkdir -p "$XDG_STATE_HOME/zsh"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
-# Source .zprofile if non-login, because I still want it sourced
+# Source .zprofile if non-login, because I still want it re-sourced
 if [[ ! -o LOGIN ]]; then
   [ -s "/etc/zprofile" ] && source "/etc/zprofile"
   [ -s "$ZDOTDIR/.zprofile" ] && source "$ZDOTDIR/.zprofile"
