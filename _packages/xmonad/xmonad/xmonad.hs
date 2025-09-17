@@ -19,13 +19,14 @@ import XMonad.Hooks.StatusBar.PP
 
 import Data.Map.Strict qualified as StrictMap (fromList)
 import Data.Monoid (All)
+import XMonad.Layout
 import XMonad.Layout.Accordion (Accordion (Accordion))
 import XMonad.Layout.BinaryColumn (BinaryColumn (BinaryColumn))
 import XMonad.Layout.BinarySpacePartition (emptyBSP)
 import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Layout.Renamed (Rename (Replace), renamed)
 import XMonad.Layout.ShowWName (showWName)
-import XMonad.Layout.Spacing (smartSpacingWithEdge, smartSpacing)
+import XMonad.Layout.Spacing (smartSpacingWithEdge, smartSpacing, spacing, spacingWithEdge)
 import XMonad.Hooks.FloatConfigureReq (fixSteamFlicker)
 
 ---------------------------------------------------------------------------------------------------
@@ -68,12 +69,13 @@ myStartupHook = do
 myLayoutHook = avoidStruts $ smartBorders $ showWName layouts
   where
     layouts = accordion ||| full ||| bsp
-    full = renamed [Replace "Full"] Full
+    full = renamed [Replace "Tall"] $
+        spacingWithEdge gap $ Tall 1 (3/100) (1/2)
     accordion = renamed [Replace "Accordion"] $
-         smartSpacing gap Accordion
+        spacing gap Accordion
     bsp = renamed [Replace "BSP"] $
-        smartSpacingWithEdge gap emptyBSP
-    gap = 5
+        spacingWithEdge gap emptyBSP
+    gap = 10
 
 ---------------------------------------------------------------------------------------------------
 
@@ -84,10 +86,10 @@ myManageHook =
         , className =? "Pavucontrol" --> doCenterFloat
         , className =? "firefox" <&&> appName =? "Toolkit" --> doCenterFloat
         , className =? "Xfce4-power-manager-settings" --> doCenterFloat
-            , isFullscreen --> doFullFloat
-            , isDialog --> doCenterFloat
-            , isNotification --> doIgnore
-            , isKDETrayWindow --> doIgnore
+        , isFullscreen --> doFullFloat
+        , isDialog --> doCenterFloat
+        , isNotification --> doIgnore
+        , isKDETrayWindow --> doIgnore
         ]
 
 ---------------------------------------------------------------------------------------------------
