@@ -4,6 +4,7 @@ WP=$1
 
 if command -v "feh" >/dev/null 2>&1; then
     feh --no-feh --bg-fill "$WP" 2>/dev/null
+fi
 
 exit 0
 
