@@ -1,9 +1,28 @@
 #!/usr/bin/env sh
 
+# =============================================================================
+# To be sourced from .zshenv
+# =============================================================================
 
-# Setup
+# XDG
 # -----------------------------------------------------------------------------
-export IS_BASE_CONFIGURED=true
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_BIN_HOME="$HOME/.local/bin" # NOT STANDARD
+
+XDG_FOLDERS=(
+    "$XDG_CONFIG_HOME"
+    "$XDG_DATA_HOME"
+    "$XDG_STATE_HOME"
+    "$XDG_CACHE_HOME"
+    "$XDG_BIN_HOME"
+)
+for i in "${XDG_FOLDERS[@]}"; do
+    [ ! -d "$i" ] || mkdir -p "$i"
+done
+unset XDG_FOLDERS
 
 
 # Helper variables
@@ -26,16 +45,4 @@ case "$SHELL" in
     *dash)  export USING_SHELL=dash;;
     *)      export USING_SHELL="$SHELL";;
 esac
-
-
-# XDG
-# -----------------------------------------------------------------------------
-export IS_XDG_CONFIGURED=true
-
-# XDG folders
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_BIN_HOME="$HOME/.local/bin" # NOT STANDARD
 

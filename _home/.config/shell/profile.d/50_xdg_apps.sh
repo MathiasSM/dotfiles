@@ -1,16 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-# This file is to be sourced EARLY. E.g. at or before
-# - Bash (interactive login): .bash_profile, .bash_login, .profile (first of)
-# - Bash (intera. non-login): .bashrc
-# - Zsh (any): .zprofile
-# 
-# NOTE: MUST ONLY use shell commands/builtins
-#       PATH has not been set. Avoid setting aliases and functions as well
+# =============================================================================
+# To be sourced from .profile ONLY
+# =============================================================================
 
-if [ "$IS_XDG_CONFIGURED" != "true" ]; then 
-    echo "Please source BASE config from .zshenv" 1>&2
-fi
+# NOTE: MUST ONLY use shell builtins
 
 # XDG Configuration for things
 # =============================================================================
@@ -73,12 +67,9 @@ export PLENV_ROOT="$XDG_DATA_HOME/plenv"
 
 # Python
 export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc.py"
-[ -f "$(dirname "$PYTHONSTARTUP")" ] \
-    || mkdir -p "$(dirname "$PYTHONSTARTUP")"
-[ -f "$PYTHONSTARTUP" ] \
-    || : > "$PYTHONSTARTUP"
-[ -f "$XDG_STATE_HOME/python_history" ] \
-    || : > "$XDG_STATE_HOME/python_history"
+[ -f "$(dirname "$PYTHONSTARTUP")" ] || mkdir -p "$(dirname "$PYTHONSTARTUP")"
+[ -f "$PYTHONSTARTUP" ] || :> "$PYTHONSTARTUP"
+[ -f "$XDG_STATE_HOME/python_history" ] || :> "$XDG_STATE_HOME/python_history"
 
 # Pyenv (Python)
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"

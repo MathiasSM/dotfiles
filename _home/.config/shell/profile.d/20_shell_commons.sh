@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+# =============================================================================
+# To be sourced from .profile ONLY
+# =============================================================================
 
 # Editors
 export LANG='en_US.UTF-8'
@@ -12,9 +16,11 @@ else
 fi
 
 # Open (externally)
-# Actually, zprezto aliases `o` to the right one, but only in interactive shells
-if [ "$OS" = "macos" ]; then export BROWSER='open'
-else export BROWSER='xdg-open'; fi
+if [ "$OS" = "macos" ]; then
+    export BROWSER='open'
+else
+    export BROWSER='xdg-open';
+fi
 
 # Pagers
 export PAGER='less'
