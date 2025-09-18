@@ -1,9 +1,12 @@
 [submodule "tmux/tpm"]
 	path = _packages/tmux/tmux/plugins/tpm
 	url = git@github.com:tmux-plugins/tpm.git
+    branch = master
 [submodule "zsh/zprezto"]
 	path = _packages/zsh/zsh/zprezto
 	url = git@github.com:sorin-ionescu/prezto.git
+    branch = master
 [submodule "alacritty/theme"]
 	path = _packages/alacritty/alacritty/themes
 	url = git@github.com:alacritty/alacritty-theme.git
+    branch = master
