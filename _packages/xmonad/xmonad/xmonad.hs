@@ -16,6 +16,7 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Rescreen
 import XMonad.Hooks.StatusBar
 import XMonad.Hooks.StatusBar.PP
+import XMonad.Hooks.StatusBar.WorkspaceScreen
 
 import Data.Map.Strict qualified as StrictMap (fromList)
 import Data.Monoid (All)
@@ -28,9 +29,16 @@ import XMonad.Layout.Renamed (Rename (Replace), renamed)
 import XMonad.Layout.ShowWName (showWName)
 import XMonad.Layout.Spacing (smartSpacingWithEdge, smartSpacing, spacing, spacingWithEdge)
 import XMonad.Hooks.FloatConfigureReq (fixSteamFlicker)
+import XMonad.Util.ClickableWorkspaces (clickablePP)
 
 ---------------------------------------------------------------------------------------------------
 
+-- |My XMonad configuration
+--
+-- High-level:
+-- * XConfig modifiers for EWMH, docks, autorandr and xmobar spawning
+-- * Custom hooks for each
+-- * Addition keys
 main :: IO ()
 main =
     xmonad
@@ -41,6 +49,7 @@ main =
         . myXmobarProp
         $ myConfig
 
+
 myConfig =
     def
         { focusFollowsMouse = True
@@ -48,6 +57,7 @@ myConfig =
         , normalBorderColor = "#555555"
         , focusedBorderColor = "#F05050"
         , terminal = "alacritty"
+        , modMask = mod4Mask -- mod4Mask=Super
         , startupHook = myStartupHook
         , layoutHook = myLayoutHook
         , manageHook = myManageHook
@@ -58,6 +68,10 @@ myConfig =
 
 ---------------------------------------------------------------------------------------------------
 
+-- |Startup Hook
+--
+-- * Sets cursor. TODO: Is this needed anymore?
+-- * Checks keymap
 myStartupHook :: X ()
 myStartupHook = do
     setDefaultCursor xC_left_ptr
@@ -65,7 +79,7 @@ myStartupHook = do
 
 ---------------------------------------------------------------------------------------------------
 
--- TODO:toggleSmartSpacing
+-- TODO: toggleSmartSpacing
 myLayoutHook = avoidStruts $ smartBorders $ showWName layouts
   where
     layouts = accordion ||| full ||| bsp
@@ -79,17 +93,22 @@ myLayoutHook = avoidStruts $ smartBorders $ showWName layouts
 
 ---------------------------------------------------------------------------------------------------
 
+{- ORMOLU_DISABLE -}
 myManageHook :: ManageHook
 myManageHook =
     composeAll
-        [ className =? "Steam" --> doCenterFloat
-        , className =? "Pavucontrol" --> doCenterFloat
-        , className =? "firefox" <&&> appName =? "Toolkit" --> doCenterFloat
-        , className =? "Xfce4-power-manager-settings" --> doCenterFloat
+        [ 
+        -- Basics
+          isDialog     --> doCenterFloat
         , isFullscreen --> doFullFloat
-        , isDialog --> doCenterFloat
-        , isNotification --> doIgnore
+        -- Ignores
+        , isNotification  --> doIgnore
         , isKDETrayWindow --> doIgnore
+        -- App-specific floats
+        , className =? "Steam"                             --> doCenterFloat
+        , className =? "Pavucontrol"                       --> doCenterFloat
+        , className =? "firefox" <&&> appName =? "Toolkit" --> doCenterFloat
+        , className =? "Xfce4-power-manager-settings"      --> doCenterFloat
         ]
 
 ---------------------------------------------------------------------------------------------------
@@ -116,8 +135,8 @@ myIcons =
 {- ORMOLU_ENABLE -}
 
 myIconFmt :: WorkspaceId -> [String] -> String
-myIconFmt wid [] = wid ++ ":" ++ "  "
-myIconFmt wid wins = iconsFmtAppend concat wid wins
+--myIconFmt wid [] = wid ++ ":_ "
+myIconFmt wid wins = iconsFmtAppend (concat) wid wins
 
 myIconConfig :: IconConfig
 myIconConfig =
@@ -135,15 +154,20 @@ barSpawner :: ScreenId -> X StatusBarConfig
 barSpawner screen = pure $ xmobarN screen
 
 xmobarN :: ScreenId -> StatusBarConfig
-xmobarN (S n) = statusBarPropTo "_XMONAD_LOG" ("xmobar -x " ++ show n) myXmobarPP
+xmobarN (S n) = statusBarPropTo "_XMONAD_LOG" ("xmobar -x " ++ show n) myPP
 
-myXmobarPP :: X PP
-myXmobarPP =
-    dynamicIconsPP myIconConfig $
+myWorkspaceScreenCombiner :: WorkspaceId -> String -> String
+myWorkspaceScreenCombiner w sc = w <> wrap "(" ")" sc
+
+myPP :: X PP
+myPP = dynamicIconsPP myIconConfig myXmobarPP >>= combineScreenInfo >>= clickablePP
+  where
+    combineScreenInfo = combineWithScreenNumber myWorkspaceScreenCombiner
+    myXmobarPP =
         def
             { ppSep = " • "
-            , ppWsSep = ""
-            , ppTitle = id
+            , ppWsSep = " "
+            , ppTitle = xmobarStrip
             , ppTitleSanitize = id
             , ppCurrent = white . xmobarBorder "Top" "#8be9fd" 3
             , ppVisible = white
@@ -152,9 +176,9 @@ myXmobarPP =
             , ppHiddenNoWindows = const ""
             , ppUrgent = red . xmobarBorder "Top" "#8b090d" 4
             , ppOrder = \[ws, l, _, wins] -> [ws, l, wins]
-            , ppExtras = [xmobarColorL "lightblue" "" (wrapL "[" "]" (shortenL 25 (logTitle .| logConst "")))]
+            , ppExtras = [xmobarColorL "lightblue" "" currentWindowName]
             }
-  where
+    currentWindowName = wrapL "[" "]" (shortenL 40 (logTitle .| logConst ""))
     white = xmobarColor "#f8f8f2" ""
     grey = xmobarColor "#a8a8a2" ""
     darkgrey = xmobarColor "#686862" ""
@@ -170,7 +194,9 @@ myAdditionalKeys =
     , ("M-d", selectWindow myEasyMotionConfig >>= (`whenJust` killWindow))
     , ("M-p", spawn "rofi -show")
     , ("M-0", spawn "toggle-comp.sh")
-    , ("M-S-4", unGrab *> spawn "scrot -s")
+    , ("M-<Escape>", spawn "rofi -show pm -modes 'pm:rofi-power-menu' -no-fixed-num-lines")
+    , ("M-s", unGrab *> spawn "scrot -s")
+    , ("M-o", spawn "flatpak run io.gitlab.librewolf-community")
     ]
 
 myEasyMotionConfig :: EasyMotionConfig
@@ -207,10 +233,5 @@ myHandleEventHook :: Event -> X All
 myHandleEventHook = do
     fadeWindowsEventHook
     fixSteamFlicker
-
----------------------------------------------------------------------------------------------------
-
--- TODO: Screen corners?
---
 
 --------------------------------------------------------------------------------
