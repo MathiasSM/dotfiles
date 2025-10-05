@@ -8,24 +8,29 @@ day to day (work or not). Job-specific files (like stuff for Amazon) is left
 out of the public repo for legal reasons.
 
 I organized these so I can use GNU's `stow` to install them as symlinks in the
-appropriate locations. A simple `install.sh` is included to automate the
-process.
+appropriate locations. 
 
 
 How to install?
 -------------------------------------------------------------------------------
 
 ```sh
+export THIS_REPO_URL=https://thisrepourl
 export DOTFILES=/location/of/this/script
-git clone $thisrepogiturl $DOTFILES
-cd $DOTFILES
+git clone "$THIS_REPO_URL" "$DOTFILES"
+cd "$DOTFILES"
+
 ./install_apt.sh  # Only debian
 ./install_brew.sh # Only macOS
 ./install_yum.sh  # Only redhat
 ./install_opt.sh  # Extra software for /opt
+
 ./link_home.sh    # Links main files (_home)
 ./link_xdg.sh     # Links all the rest
 ```
+
+Note: the "bootstrapping" might not be ready.
+
 
 ### Flags and environment variables
 
@@ -34,8 +39,8 @@ Env Var         | Flag   | Effect / Meaning
 `DOTFILES`      | N/A    | **Required**. Tells the script where it's located.
 `DEBUG`         | `-d`   | Enable extra/verbose output.
 `DRY_RUN`       | `-n`   | Log actions instead of executing.
-`FORCE_INSTALL` | `-f`   | [Only for `install_x` scripts] Self-explanatory
-N/A             | `-S`   | Stow flag to stow files. **Default behavior.**
+`FORCE_INSTALL` | `-f`   | \[Only for `install_x` scripts] Self-explanatory
+N/A             | `-S`   | **Default behavior**. Stow flag to stow files.
 N/A             | `-D`   | Stow flag to de-stow files. Use this to "uninstall" the dotfiles.
 N/A             | `-R`   | Stow flag to re-stow files. Same as destowing and stowing again.
 
@@ -62,70 +67,91 @@ I have the following within `_home`, which is linked directly in `$HOME`:
 I have the following `_packages/*`, which are linked into `$XDG_CONFIG_HOME`
 (`~/.config`):
 
-- `alacritty`: My current terminal emulator.
-- `amethyst`: Tiling window manager, similar to xmonad. [macos-only]
-- `autorandr`: Nice little auto-setup for monitors. [linux-only]
-- `dunst`: Simple notifications. [linux-only]
-- `ghc`: The (Glorious) Glasgow **Haskell** Compiler and REPL.
-- `ghcup`: The main installer for GHC/all haskell things.
-- `git`: My personal **Git** configuration, aliases and global ignore file.
-- `gnupg`: Personal config for **GPG**. I don't use it very often.
-- `irb`: Ruby REPL things.
-- `karabiner`: Configuration for **Karabiner Elements**. [macos-only]
-- `mise`: **mise-in-place** configuration files.
-- `npm`: **Node** package manager.
-- `pgcli`: Fancier postgres REPL.
-- `picom`: Compositor for X. [linux-only]
-- `psql`: Configurations for the standard/default REPL for **Postgres**.
-- `python`: The snake, not the language.
-- `rofi`: App launcher and dynamic text menu. [linux-only]
-- `tmux`: I mostly do everything on the terminal, mostly in a remote machine.
-- `variety`: Auto-change wallpapers, from different sources. [linux-only]
-- `xmobar`: Status bar made for use with Xmonad.
-- `xmonad`: Tiling window manager. [linux-only]
-- `zsh`: The shell I use. I guess. 
+- **Common**
+    - `alacritty`: My current terminal emulator.
+    - `ghc`: The (Glorious) Glasgow **Haskell** Compiler and REPL.
+    - `ghcup`: The main installer for GHC/all haskell things.
+    - `git`: My personal **Git** configuration, aliases and global ignore file.
+    - `gnupg`: Personal config for **GPG**. I don't use it very often.
+    - `irb`: Ruby REPL things.
+    - `mise`: **mise-in-place** configuration files.
+    - `npm`: **Node** package manager.
+    - `pgcli`: Fancier postgres REPL.
+    - `psql`: Configurations for the standard/default REPL for **Postgres**.
+    - `python`: The snake, not the language.
+    - `tmux`: I mostly do everything on the terminal, mostly in a remote machine.
+    - `zsh`: The shell I use. I guess. 
+- **Linux-only**
+    - `autorandr`: Nice little auto-setup for monitors.
+    - `dunst`: Pretty plain notifications.
+    - `picom`: Compositor for X.
+    - `rofi`: App launcher and dynamic text menu.
+    - `variety`: Auto-change wallpapers, from different sources.
+    - `xmobar`: Status bar made for use with Xmonad.
+    - `xmonad`: Tiling window manager.
+- **macOS-only**
+    - `amethyst`: Tiling window manager, similar to xmonad.
+    - `karabiner`: Configuration for **Karabiner Elements**.
+      - I hate using <kbd>cmd</kbd> for everything; I prefer linux keybindings.
 
-**Note:** I keep configuration files for **NeoVim** in a separate
-repo: [MathiasSM/init.lua](https://github.com/MathiasSM/init.lua).
 
-### Some things I'm missing
+**Note:** I keep configuration files for **NeoVim** in a separate repo:
+[MathiasSM/init.lua]. I used to link it here via git submodules but was a bit
+of a pain to maintain.
 
-- More dotfiles:
-    - `eslint` (better defaults)
-    - `bash` (for when I jump from zsh)
-    - `mutt` (if I ever get to properly configure it)
-    - terminfo files for italics
-    - personal scripts
-
-- Too personal:
-    - `gmailctl`: API keys, personal info and so on
-    - `hledger`: Bad finance organization
-
-- Some from debian days (from old dotfiles repo)
-    - `libinput` config for trackpad
 
 My X configuration (linux)
 -------------------------------------------------------------------------------
 
-Feature              | Provided by...         | Notes
--------------------- | ---------------------- | -------------------------------
-Application launcher | rofi (on-demand)       | Could be dmenu.
-Audio control        | ?                      | 
-Backlight control    | xfce4-power-manager    | Simpler than managing it myself.
-Compositor           | picom (on-demand)      | Off by default, but hotkey-ed.
-Default applications | -                      | Maybe setting defaults is useful.
-Display manager      | lightdm                | Small-ish and simple.
-Logout dialogue      | N/A                    | Could be a rofi/dmenu script.
-Media control        | N/A                    | No need, I think.
-Notifications        | dunst                  | 
-Polkit agent         | ?                      | 
-Power management     | xfce4-power-manager    |
-Screen capture       | scrot                  | Could be maim.
-Screen lock          | xss-lock + xsecurelock | Annoying to figure out!
-Screen temperature   | N/A                    | Used to use redshift.
-Task/Status bar      | xmobar                 | Plays nice with xmonad
-Wallpaper setter     | variety                | Uses feh under the hood
-Window manager       | xmonad                 | Tiling tiles.
+Some time ago I decided even `xfce` or `lxde` was too much bloat.
 
-- autorandr
-- libinput
+1. **Display Server**: Xorg. I have not gotten around to move to Wayland, as I
+   don't have proper incentive to do so yet.
+    - `autorandr` is in charge of saving/applying monitor configurations.
+    - `arandr` can be used to setup a configuration for new monitors via GUI.
+1. **Display Manager** (Login Manager): `lightdm`. It works with many/any
+desktop environment (useful if I change that, or experiment).
+    - `xsecurelock` with `xss-lock` for automatic locking.
+1. **Power Manager**: `xfce4-power-manager`. Using also...
+    - `acpid` to listen to events.
+    - `laptop-mode-tools`, which supposedly sets up good settings.
+    - `powertop`, to figure out who's draining my stuff.
+1. **Input devices**: `libinput`.
+1. **Network Manager**: The one with the same name.
+    - `dnsmasq` for local DNS caching.
+    - `blueman` for GUI frontend for bluetooth (through `bluez`)
+      - Include `blueman-applet`
+1. **Sound System**: `PulseAudio`
+    - `pavucontrol` as GUI.
+1. Xsession (started by the display manager) sets up:
+    1. **Window Manager**: `xmonad`.
+        1. `xmobar` called per-monitor as status bar.
+    1. **Compositor**: `picom` is used as compositor, toggled with keybind.
+    1. **Application launcher**: `rofi`.
+    1. **Notifications**: `dunst`.
+    1. **Tray**: `trayer`. Moving stuff to xmobar where possible.
+    1. **Wallpapers**: `variety`.
+    1. **Screenshots**: `scrot`.
+
+
+TODO
+-------------------------------------------------------------------------------
+
+- [ ] **Reorganize**: I want to extract the xsession setup to its own section.
+This is because its not only dotfiles but requires some manual changes like
+copying files into `/etc/` or else. Plus it's something I want to keep more
+stable than the rest.
+- [ ] `lightdm`: Try _not_ using it. If actually needed, document it here.
+    - [ ] `emptty`: Try using it instead of `lightdm`.
+- [ ] `xsecure`, `xfce4-power-manager`: Race condition on lid close.
+- [ ] `libinput`: is currently not picking up default keyboard settings.
+- [ ] `libinput`: might not be picking up trackpad settings.
+- [ ] `stalonegray`: Get rid of this, by adding bluetooth and variety menus on xmobar.
+- [ ] `nvim`: Add script to install nvim dotfiles from [MathiasSM/init.lua].
+- [ ] `rofi`: Add scripts for
+  - [ ] Power management (shutdown, restart, suspend)
+
+
+<!--References---------------------------------------------------------------->
+
+[MathiasSM/init.lua]: https://github.com/MathiasSM/init.lua
