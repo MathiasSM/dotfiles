@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-notify-send -i display "Display profile" "$AUTORANDR_CURRENT_PROFILE"
+notify-send -a "autorandr" -i display "" "$AUTORANDR_CURRENT_PROFILE"
