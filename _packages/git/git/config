@@ -6,7 +6,7 @@
 [credential]
 	username = mathiassm
 
-[includeIf "hasconfig:remote.*.url:**github.com/**"]
+[includeIf "gitdir:~/.dotfiles/"]
 	path = config_github
 [include]
 	path = config_private
@@ -65,6 +65,7 @@
 	all = true
 	prune = false
 	pruneTags = false
+    recurseSubmodules = on-demand
 [gpg]
 	program = gpg
 [grep]
